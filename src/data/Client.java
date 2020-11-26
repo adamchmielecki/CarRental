@@ -2,17 +2,15 @@ package data;
 
 public class Client extends User {
 
-    private int ID;
+    private int clientID;
     private String drivingLicenseNumber;
 
-    @Override
-    public int getID() {
-        return ID;
+    public int getClientID() {
+        return clientID;
     }
 
-    @Override
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setClientID(int clientID) {
+        this.clientID = clientID;
     }
 
     public String getDrivingLicenseNumber() {

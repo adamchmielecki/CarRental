@@ -2,9 +2,18 @@ package data;
 
 public class Worker extends User {
 
+    private int workerID;
     private String workerPosition;
     private float salary;
     private Department department;
+
+    public int getWorkerID() {
+        return workerID;
+    }
+
+    public void setWorkerID(int workerID) {
+        this.workerID = workerID;
+    }
 
     public String getWorkerPosition() {
         return workerPosition;
