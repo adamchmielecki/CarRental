@@ -4,18 +4,18 @@ import java.util.List;
 
 public class Reservation {
 
-    private int ID;
+    private int reservationID;
     private Client client;
     private LocaleData startDate;
     private LocaleData endDate;
     private List<Vehicle> cars;
 
-    public int getID() {
-        return ID;
+    public int getReservationID() {
+        return reservationID;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setReservationID(int reservationID) {
+        this.reservationID = reservationID;
     }
 
     public Client getClient() {

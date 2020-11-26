@@ -2,7 +2,7 @@ package data;
 
 public class User {
 
-    private int ID;
+    private int userID;
     private int PESEL;
     private String firstName;
     private String lastName;
@@ -13,11 +13,11 @@ public class User {
     private int identityCardNumber;
 
     public int getID() {
-        return ID;
+        return userID;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setID(int userID) {
+        this.userID = userID;
     }
 
     public int getPESEL() {

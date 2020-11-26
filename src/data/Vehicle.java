@@ -2,7 +2,7 @@ package data;
 
 public class Vehicle {
 
-    private int ID;
+    private int vehicleID;
     private String brand;
     private String model;
     private int yearOfProduction;
@@ -11,12 +11,12 @@ public class Vehicle {
     private enum stateOfCar{};
     private Department department;
 
-    public int getID() {
-        return ID;
+    public int getVehicleID() {
+        return vehicleID;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setVehicleID(int vehicleID) {
+        this.vehicleID = vehicleID;
     }
 
     public String getBrand() {

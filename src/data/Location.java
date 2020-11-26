@@ -2,17 +2,17 @@ package data;
 
 public class Location {
 
-    private int ID;
+    private int locationID;
     private String postCode;
     private String city;
     private String address;
 
-    public int getID() {
-        return ID;
+    public int getLocationID() {
+        return locationID;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setLocationID(int locationID) {
+        this.locationID = locationID;
     }
 
     public String getPostCode() {

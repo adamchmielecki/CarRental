@@ -2,16 +2,16 @@ package data;
 
 public class Department {
 
-    private int ID;
+    private int departmentID;
     private Worker manager;
     private Location location;
 
-    public int getID() {
-        return ID;
+    public int getDepartmentID() {
+        return departmentID;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setDepartmentID(int departmentID) {
+        this.departmentID = departmentID;
     }
 
     public Worker getManager() {

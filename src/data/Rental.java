@@ -3,7 +3,7 @@ package data;
 public class Rental extends Reservation{
 
     private Worker worker;
-    private int ID;
+    private int rentalID;
     private Bill bill;
 
     public Worker getWorker() {
@@ -14,14 +14,12 @@ public class Rental extends Reservation{
         this.worker = worker;
     }
 
-    @Override
-    public int getID() {
-        return ID;
+    public int getRentalID() {
+        return rentalID;
     }
 
-    @Override
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setRentalID(int rentalID) {
+        this.rentalID = rentalID;
     }
 
     public Bill getBill() {
