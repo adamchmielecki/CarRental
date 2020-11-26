@@ -1,75 +1,52 @@
 package data;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 public class Reservation {
 
     private int ID;
     private Client client;
-    private string startDate;
-    private string endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private List<Vehicle> cars;
 
-    public void getID() {
-        // TODO - implement Reservation.getID
-        throw new UnsupportedOperationException();
+    public int getID() {
+        return ID;
     }
 
-    /**
-     *
-     * @param ID
-     */
     public void setID(int ID) {
-        // TODO - implement Reservation.setID
-        throw new UnsupportedOperationException();
+        this.ID = ID;
     }
 
     public Client getClient() {
-        return this.client;
+        return client;
     }
 
-    /**
-     *
-     * @param client
-     */
     public void setClient(Client client) {
         this.client = client;
     }
 
-    public void getAttribute() {
-        // TODO - implement Reservation.getAttribute
-        throw new UnsupportedOperationException();
+    public LocalDateTime getStartDate() {
+        return startDate;
     }
 
-    /**
-     *
-     * @param attribute
-     */
-    public void setAttribute(int attribute) {
-        // TODO - implement Reservation.setAttribute
-        throw new UnsupportedOperationException();
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
     }
 
-    public void getEndDate() {
-        // TODO - implement Reservation.getEndDate
-        throw new UnsupportedOperationException();
+    public LocalDateTime getEndDate() {
+        return endDate;
     }
 
-    /**
-     *
-     * @param endDate
-     */
-    public void setEndDate(int endDate) {
-        // TODO - implement Reservation.setEndDate
-        throw new UnsupportedOperationException();
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
     }
 
     public List<Vehicle> getCars() {
-        return this.cars;
+        return cars;
     }
 
-    /**
-     *
-     * @param cars
-     */
     public void setCars(List<Vehicle> cars) {
         this.cars = cars;
     }

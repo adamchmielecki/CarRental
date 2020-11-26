@@ -3,63 +3,39 @@ package data;
 public class Location {
 
     private int ID;
-    private string postCode;
-    private string city;
-    private string address;
+    private String postCode;
+    private String city;
+    private String address;
 
-    public void getID() {
-        // TODO - implement Location.getID
-        throw new UnsupportedOperationException();
+    public int getID() {
+        return ID;
     }
 
-    /**
-     *
-     * @param ID
-     */
     public void setID(int ID) {
-        // TODO - implement Location.setID
-        throw new UnsupportedOperationException();
+        this.ID = ID;
     }
 
-    public void getPostCode() {
-        // TODO - implement Location.getPostCode
-        throw new UnsupportedOperationException();
+    public String getPostCode() {
+        return postCode;
     }
 
-    /**
-     *
-     * @param PostCode
-     */
-    public void setPostCode(int PostCode) {
-        // TODO - implement Location.setPostCode
-        throw new UnsupportedOperationException();
+    public void setPostCode(String postCode) {
+        this.postCode = postCode;
     }
 
-    public void getCity() {
-        // TODO - implement Location.getCity
-        throw new UnsupportedOperationException();
+    public String getCity() {
+        return city;
     }
 
-    /**
-     *
-     * @param City
-     */
-    public void setCity(int City) {
-        // TODO - implement Location.setCity
-        throw new UnsupportedOperationException();
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public void getAddress() {
-        // TODO - implement Location.getAddress
-        throw new UnsupportedOperationException();
+    public String getAddress() {
+        return address;
     }
 
-    /**
-     *
-     * @param Address
-     */
-    public void setAddress(int Address) {
-        // TODO - implement Location.setAddress
-        throw new UnsupportedOperationException();
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

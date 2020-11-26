@@ -3,33 +3,23 @@ package data;
 public class Client extends User {
 
     private int ID;
-    private string drivingLicenseNumber;
+    private String drivingLicenseNumber;
 
-    public void getID() {
-        // TODO - implement Client.getID
-        throw new UnsupportedOperationException();
+    @Override
+    public int getID() {
+        return ID;
     }
 
-    /**
-     *
-     * @param ID
-     */
+    @Override
     public void setID(int ID) {
-        // TODO - implement Client.setID
-        throw new UnsupportedOperationException();
+        this.ID = ID;
     }
 
-    public void getDrivingLicenseNumber() {
-        // TODO - implement Client.getDrivingLicenseNumber
-        throw new UnsupportedOperationException();
+    public String getDrivingLicenseNumber() {
+        return drivingLicenseNumber;
     }
 
-    /**
-     *
-     * @param DrivingLicenseNumber
-     */
-    public void setDrivingLicenseNumber(int DrivingLicenseNumber) {
-        // TODO - implement Client.setDrivingLicenseNumber
-        throw new UnsupportedOperationException();
+    public void setDrivingLicenseNumber(String drivingLicenseNumber) {
+        this.drivingLicenseNumber = drivingLicenseNumber;
     }
 }

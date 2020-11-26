@@ -3,121 +3,75 @@ package data;
 public class Vehicle {
 
     private int ID;
-    private string brand;
-    private string model;
+    private String brand;
+    private String model;
     private int yearOfProduction;
     private int carsMileage;
-    private string status;
-    private string stateOfCar;
+    private String status;
+    private String stateOfCar;
     private Department department;
 
-    public void getID() {
-        // TODO - implement Vehicle.getID
-        throw new UnsupportedOperationException();
+    public int getID() {
+        return ID;
     }
 
-    /**
-     *
-     * @param ID
-     */
     public void setID(int ID) {
-        // TODO - implement Vehicle.setID
-        throw new UnsupportedOperationException();
+        this.ID = ID;
     }
 
-    public void getBrand() {
-        // TODO - implement Vehicle.getBrand
-        throw new UnsupportedOperationException();
+    public String getBrand() {
+        return brand;
     }
 
-    /**
-     *
-     * @param Brand
-     */
-    public void setBrand(int Brand) {
-        // TODO - implement Vehicle.setBrand
-        throw new UnsupportedOperationException();
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
-    public void getModel() {
-        // TODO - implement Vehicle.getModel
-        throw new UnsupportedOperationException();
+    public String getModel() {
+        return model;
     }
 
-    /**
-     *
-     * @param Model
-     */
-    public void setModel(int Model) {
-        // TODO - implement Vehicle.setModel
-        throw new UnsupportedOperationException();
+    public void setModel(String model) {
+        this.model = model;
     }
 
-    public void getYearOfProduction() {
-        // TODO - implement Vehicle.getYearOfProduction
-        throw new UnsupportedOperationException();
+    public int getYearOfProduction() {
+        return yearOfProduction;
     }
 
-    /**
-     *
-     * @param YearOfProduction
-     */
-    public void setYearOfProduction(int YearOfProduction) {
-        this.yearOfProduction = YearOfProduction;
+    public void setYearOfProduction(int yearOfProduction) {
+        this.yearOfProduction = yearOfProduction;
     }
 
-    public void getCarsMileage() {
-        // TODO - implement Vehicle.getCarsMileage
-        throw new UnsupportedOperationException();
+    public int getCarsMileage() {
+        return carsMileage;
     }
 
-    /**
-     *
-     * @param CarsMileage
-     */
-    public void setCarsMileage(int CarsMileage) {
-        this.carsMileage = CarsMileage;
+    public void setCarsMileage(int carsMileage) {
+        this.carsMileage = carsMileage;
     }
 
-    public void getStatus() {
-        // TODO - implement Vehicle.getStatus
-        throw new UnsupportedOperationException();
+    public String getStatus() {
+        return status;
     }
 
-    /**
-     *
-     * @param Status
-     */
-    public void setStatus(int Status) {
-        // TODO - implement Vehicle.setStatus
-        throw new UnsupportedOperationException();
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public void getStateOfCar() {
-        // TODO - implement Vehicle.getStateOfCar
-        throw new UnsupportedOperationException();
+    public String getStateOfCar() {
+        return stateOfCar;
     }
 
-    /**
-     *
-     * @param StateOfCar
-     */
-    public void setStateOfCar(int StateOfCar) {
-        // TODO - implement Vehicle.setStateOfCar
-        throw new UnsupportedOperationException();
+    public void setStateOfCar(String stateOfCar) {
+        this.stateOfCar = stateOfCar;
     }
 
-    public void getDepartmentID() {
-        // TODO - implement Vehicle.getDepartmentID
-        throw new UnsupportedOperationException();
+    public Department getDepartment() {
+        return department;
     }
 
-    /**
-     *
-     * @param DepartmentID
-     */
-    public void setDepartmentID(int DepartmentID) {
-        // TODO - implement Vehicle.setDepartmentID
-        throw new UnsupportedOperationException();
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 }
