@@ -1,95 +1,140 @@
 package data;
 
 public class User {
-    int ID;
-    int PESEL;
-    String firstName;
-    String lastName;
-    int phoneNumber;
-    int postCode;
-    String city;
-    String address;
-    int idCardNumber;
-    int drivingLicenseNumber;
 
-    public int getID() {
-        return ID;
+    private int ID;
+    private int PESEL;
+    private string firstName;
+    private string lastName;
+    private string phoneNumber;
+    private string postCode;
+    private string city;
+    private string address;
+    private int identityCardNumber;
+
+    public void getID() {
+        // TODO - implement User.getID
+        throw new UnsupportedOperationException();
     }
 
+    /**
+     *
+     * @param ID
+     */
     public void setID(int ID) {
-        this.ID = ID;
+        // TODO - implement User.setID
+        throw new UnsupportedOperationException();
     }
 
-    public int getPESEL() {
-        return PESEL;
+    public void getPESEL() {
+        // TODO - implement User.getPESEL
+        throw new UnsupportedOperationException();
     }
 
+    /**
+     *
+     * @param PESEL
+     */
     public void setPESEL(int PESEL) {
-        this.PESEL = PESEL;
+        // TODO - implement User.setPESEL
+        throw new UnsupportedOperationException();
     }
 
-    public String getFirstName() {
-        return firstName;
+    public void getFirstName() {
+        // TODO - implement User.getFirstName
+        throw new UnsupportedOperationException();
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    /**
+     *
+     * @param FirstName
+     */
+    public void setFirstName(int FirstName) {
+        // TODO - implement User.setFirstName
+        throw new UnsupportedOperationException();
     }
 
-    public String getLastName() {
-        return lastName;
+    public void getLastName() {
+        // TODO - implement User.getLastName
+        throw new UnsupportedOperationException();
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    /**
+     *
+     * @param LastName
+     */
+    public void setLastName(int LastName) {
+        // TODO - implement User.setLastName
+        throw new UnsupportedOperationException();
     }
 
-    public int getPhoneNumber() {
-        return phoneNumber;
+    public void getPhoneNumber() {
+        // TODO - implement User.getPhoneNumber
+        throw new UnsupportedOperationException();
     }
 
-    public void setPhoneNumber(int phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    /**
+     *
+     * @param PhoneNumber
+     */
+    public void setPhoneNumber(int PhoneNumber) {
+        // TODO - implement User.setPhoneNumber
+        throw new UnsupportedOperationException();
     }
 
-    public int getPostCode() {
-        return postCode;
+    public void getPostCode() {
+        // TODO - implement User.getPostCode
+        throw new UnsupportedOperationException();
     }
 
-    public void setPostCode(int postCode) {
-        this.postCode = postCode;
+    /**
+     *
+     * @param PostCode
+     */
+    public void setPostCode(int PostCode) {
+        // TODO - implement User.setPostCode
+        throw new UnsupportedOperationException();
     }
 
-    public String getCity() {
-        return city;
+    public void getCity() {
+        // TODO - implement User.getCity
+        throw new UnsupportedOperationException();
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    /**
+     *
+     * @param City
+     */
+    public void setCity(int City) {
+        // TODO - implement User.setCity
+        throw new UnsupportedOperationException();
     }
 
-    public String getAddress() {
-        return address;
+    public void getIdentityCardNumber() {
+        // TODO - implement User.getIdentityCardNumber
+        throw new UnsupportedOperationException();
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    /**
+     *
+     * @param IdentityCardNumber
+     */
+    public void setIdentityCardNumber(int IdentityCardNumber) {
+        this.identityCardNumber = IdentityCardNumber;
     }
 
-    public int getIdCardNumber() {
-        return idCardNumber;
+    public void getAddress() {
+        // TODO - implement User.getAddress
+        throw new UnsupportedOperationException();
     }
 
-    public void setIdCardNumber(int idCardNumber) {
-        this.idCardNumber = idCardNumber;
-    }
-
-    public int getDrivingLicenseNumber() {
-        return drivingLicenseNumber;
-    }
-
-    public void setDrivingLicenseNumber(int drivingLicenseNumber) {
-        this.drivingLicenseNumber = drivingLicenseNumber;
+    /**
+     *
+     * @param Address
+     */
+    public void setAddress(int Address) {
+        // TODO - implement User.setAddress
+        throw new UnsupportedOperationException();
     }
 
 }
