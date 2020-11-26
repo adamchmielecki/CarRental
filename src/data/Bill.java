@@ -1,11 +1,13 @@
 package data;
 
+import sun.util.resources.LocaleData;
+
 public class Bill {
 
     private int ID;
     private float cost;
     private float discount;
-    private String date;
+    private LocaleData date;
     private float penalty;
 
     public int getID() {
@@ -32,11 +34,11 @@ public class Bill {
         this.discount = discount;
     }
 
-    public String getDate() {
+    public LocaleData getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocaleData date) {
         this.date = date;
     }
 

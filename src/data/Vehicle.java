@@ -7,8 +7,8 @@ public class Vehicle {
     private String model;
     private int yearOfProduction;
     private int carsMileage;
-    private String status;
-    private String stateOfCar;
+    private enum status{};
+    private enum stateOfCar{};
     private Department department;
 
     public int getID() {
@@ -49,22 +49,6 @@ public class Vehicle {
 
     public void setCarsMileage(int carsMileage) {
         this.carsMileage = carsMileage;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getStateOfCar() {
-        return stateOfCar;
-    }
-
-    public void setStateOfCar(String stateOfCar) {
-        this.stateOfCar = stateOfCar;
     }
 
     public Department getDepartment() {

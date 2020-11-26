@@ -1,14 +1,13 @@
 package data;
-
-import java.time.LocalDateTime;
+import sun.util.resources.LocaleData;
 import java.util.List;
 
 public class Reservation {
 
     private int ID;
     private Client client;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocaleData startDate;
+    private LocaleData endDate;
     private List<Vehicle> cars;
 
     public int getID() {
@@ -27,19 +26,19 @@ public class Reservation {
         this.client = client;
     }
 
-    public LocalDateTime getStartDate() {
+    public LocaleData getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(LocaleData startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDateTime getEndDate() {
+    public LocaleData getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(LocaleData endDate) {
         this.endDate = endDate;
     }
 
