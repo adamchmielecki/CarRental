@@ -1,5 +1,6 @@
 package application;
 
+import data.Reservation;
 import data.Vehicle;
 import data.Department;
 
@@ -9,6 +10,8 @@ public class ClientView {
 
     private ArrayList<Vehicle> carList;
     private ArrayList<Department> departmentsList;
+    private ArrayList<Reservation> reservationsList;
+
 
     public ArrayList<Vehicle> getCarList() {
         return carList;
@@ -26,7 +29,16 @@ public class ClientView {
         this.departmentsList = departmentsList;
     }
 
+    public ArrayList<Reservation> getReservationsList() {
+        return reservationsList;
+    }
+
+    public void setReservationsList(ArrayList<Reservation> reservationsList) {
+        this.reservationsList = reservationsList;
+    }
+
     public void reserveCar() {
+
     }
 
     public void register() {

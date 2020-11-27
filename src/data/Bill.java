@@ -1,13 +1,13 @@
 package data;
 
-import sun.util.resources.LocaleData;
+import java.time.LocalDateTime;
 
 public class Bill {
 
     private int ID;
     private float cost;
     private float discount;
-    private LocaleData date;
+    private LocalDateTime date;
     private float penalty;
 
     public int getID() {
@@ -34,11 +34,11 @@ public class Bill {
         this.discount = discount;
     }
 
-    public LocaleData getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocaleData date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
