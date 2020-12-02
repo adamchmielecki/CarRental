@@ -1,123 +1,144 @@
 package data;
 
+import java.time.LocalDate;
+
 public class Vehicle {
 
-    private int ID;
-    private string brand;
-    private string model;
+    private int vehicleID;
+    private String brand;
+    private String model;
     private int yearOfProduction;
     private int carsMileage;
-    private string status;
-    private string stateOfCar;
+    private String registrationNumber;
+    private int engineCapacity;
+    private int power;
+    private String typeOfFuel;
+    private LocalDate nextOverviewDate;
+    private LocalDate endOfInsurancePolicy;
+    private String segment;
+    private String bodyType;
     private Department department;
 
-    public void getID() {
-        // TODO - implement Vehicle.getID
-        throw new UnsupportedOperationException();
+    private enum status{
+        AVAILABLE,
+        UNAVAILABLE
+    }
+    private enum stateOfCar{
+        FUNCTIONAL,
+        DAMAGED,
+        OVERVIEW_REQUIRED,
+        SERVICE_REQUIRED
     }
 
-    /**
-     *
-     * @param ID
-     */
-    public void setID(int ID) {
-        // TODO - implement Vehicle.setID
-        throw new UnsupportedOperationException();
+    public int getVehicleID() {
+        return vehicleID;
     }
 
-    public void getBrand() {
-        // TODO - implement Vehicle.getBrand
-        throw new UnsupportedOperationException();
+    public void setVehicleID(int vehicleID) {
+        this.vehicleID = vehicleID;
     }
 
-    /**
-     *
-     * @param Brand
-     */
-    public void setBrand(int Brand) {
-        // TODO - implement Vehicle.setBrand
-        throw new UnsupportedOperationException();
+    public String getBrand() {
+        return brand;
     }
 
-    public void getModel() {
-        // TODO - implement Vehicle.getModel
-        throw new UnsupportedOperationException();
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
-    /**
-     *
-     * @param Model
-     */
-    public void setModel(int Model) {
-        // TODO - implement Vehicle.setModel
-        throw new UnsupportedOperationException();
+    public String getModel() {
+        return model;
     }
 
-    public void getYearOfProduction() {
-        // TODO - implement Vehicle.getYearOfProduction
-        throw new UnsupportedOperationException();
+    public void setModel(String model) {
+        this.model = model;
     }
 
-    /**
-     *
-     * @param YearOfProduction
-     */
-    public void setYearOfProduction(int YearOfProduction) {
-        this.yearOfProduction = YearOfProduction;
+    public int getYearOfProduction() {
+        return yearOfProduction;
     }
 
-    public void getCarsMileage() {
-        // TODO - implement Vehicle.getCarsMileage
-        throw new UnsupportedOperationException();
+    public void setYearOfProduction(int yearOfProduction) {
+        this.yearOfProduction = yearOfProduction;
     }
 
-    /**
-     *
-     * @param CarsMileage
-     */
-    public void setCarsMileage(int CarsMileage) {
-        this.carsMileage = CarsMileage;
+    public int getCarsMileage() {
+        return carsMileage;
     }
 
-    public void getStatus() {
-        // TODO - implement Vehicle.getStatus
-        throw new UnsupportedOperationException();
+    public void setCarsMileage(int carsMileage) {
+        this.carsMileage = carsMileage;
     }
 
-    /**
-     *
-     * @param Status
-     */
-    public void setStatus(int Status) {
-        // TODO - implement Vehicle.setStatus
-        throw new UnsupportedOperationException();
+    public String getRegistrationNumber() {
+        return registrationNumber;
     }
 
-    public void getStateOfCar() {
-        // TODO - implement Vehicle.getStateOfCar
-        throw new UnsupportedOperationException();
+    public void setRegistrationNumber(String registrationNumber) {
+        this.registrationNumber = registrationNumber;
     }
 
-    /**
-     *
-     * @param StateOfCar
-     */
-    public void setStateOfCar(int StateOfCar) {
-        // TODO - implement Vehicle.setStateOfCar
-        throw new UnsupportedOperationException();
+    public int getEngineCapacity() {
+        return engineCapacity;
     }
 
-    public void getDepartmentID() {
-        // TODO - implement Vehicle.getDepartmentID
-        throw new UnsupportedOperationException();
+    public void setEngineCapacity(int engineCapacity) {
+        this.engineCapacity = engineCapacity;
     }
 
-    /**
-     *
-     * @param DepartmentID
-     */
-    public void setDepartmentID(int DepartmentID) {
-        // TODO - implement Vehicle.setDepartmentID
-        throw new UnsupportedOperationException();
+    public int getPower() {
+        return power;
+    }
+
+    public void setPower(int power) {
+        this.power = power;
+    }
+
+    public String getTypeOfFuel() {
+        return typeOfFuel;
+    }
+
+    public void setTypeOfFuel(String typeOfFuel) {
+        this.typeOfFuel = typeOfFuel;
+    }
+
+    public LocalDate getNextOverviewDate() {
+        return nextOverviewDate;
+    }
+
+    public void setNextOverviewDate(LocalDate nextOverviewDate) {
+        this.nextOverviewDate = nextOverviewDate;
+    }
+
+    public LocalDate getEndOfInsurancePolicy() {
+        return endOfInsurancePolicy;
+    }
+
+    public void setEndOfInsurancePolicy(LocalDate endOfInsurancePolicy) {
+        this.endOfInsurancePolicy = endOfInsurancePolicy;
+    }
+
+    public String getSegment() {
+        return segment;
+    }
+
+    public void setSegment(String segment) {
+        this.segment = segment;
+    }
+
+    public String getBodyType() {
+        return bodyType;
+    }
+
+    public void setBodyType(String bodyType) {
+        this.bodyType = bodyType;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 }

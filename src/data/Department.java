@@ -2,49 +2,31 @@ package data;
 
 public class Department {
 
-    private int ID;
-    private Worker Manager;
+    private int departmentID;
+    private Worker manager;
     private Location location;
 
-    public void getID() {
-        // TODO - implement Department.getID
-        throw new UnsupportedOperationException();
+    public int getDepartmentID() {
+        return departmentID;
     }
 
-    /**
-     *
-     * @param ID
-     */
-    public void setID(int ID) {
-        // TODO - implement Department.setID
-        throw new UnsupportedOperationException();
+    public void setDepartmentID(int departmentID) {
+        this.departmentID = departmentID;
     }
 
-    public void getManager() {
-        // TODO - implement Department.getManager
-        throw new UnsupportedOperationException();
+    public Worker getManager() {
+        return manager;
     }
 
-    /**
-     *
-     * @param Manager
-     */
-    public void setManager(int Manager) {
-        // TODO - implement Department.setManager
-        throw new UnsupportedOperationException();
+    public void setManager(Worker manager) {
+        this.manager = manager;
     }
 
-    public void getLocation() {
-        // TODO - implement Department.getLocation
-        throw new UnsupportedOperationException();
+    public Location getLocation() {
+        return location;
     }
 
-    /**
-     *
-     * @param Location
-     */
-    public void setLocation(int Location) {
-        // TODO - implement Department.setLocation
-        throw new UnsupportedOperationException();
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }

@@ -1,6 +1,10 @@
 package application;
 
 import java.util.ArrayList;
+import data.Vehicle;
+import data.Rental;
+import data.Client;
+
 
 public class WorkerView {
 
@@ -8,43 +12,51 @@ public class WorkerView {
     private ArrayList<Vehicle> carList;
     private ArrayList<Rental> bookingList;
 
+    public ArrayList<Client> getClientList() {
+        return clientList;
+    }
+
+    public void setClientList(ArrayList<Client> clientList) {
+        this.clientList = clientList;
+    }
+
+    public ArrayList<Vehicle> getCarList() {
+        return carList;
+    }
+
+    public void setCarList(ArrayList<Vehicle> carList) {
+        this.carList = carList;
+    }
+
+    public ArrayList<Rental> getBookingList() {
+        return bookingList;
+    }
+
+    public void setBookingList(ArrayList<Rental> bookingList) {
+        this.bookingList = bookingList;
+    }
+
     public void rentCar() {
-        // TODO - implement WorkerView.rentCar
-        throw new UnsupportedOperationException();
     }
 
     public void endRental() {
-        // TODO - implement WorkerView.endRental
-        throw new UnsupportedOperationException();
     }
 
     public void showRentals() {
-        // TODO - implement WorkerView.showRentals
-        throw new UnsupportedOperationException();
     }
 
     public void showCarList() {
-        // TODO - implement WorkerView.showCarList
-        throw new UnsupportedOperationException();
     }
 
     public void showClients() {
-        // TODO - implement WorkerView.showClients
-        throw new UnsupportedOperationException();
     }
 
     public void showClientsReservations() {
-        // TODO - implement WorkerView.showClientsReservations
-        throw new UnsupportedOperationException();
     }
 
     public void generateBill() {
-        // TODO - implement WorkerView.generateBill
-        throw new UnsupportedOperationException();
     }
 
     public void signIn() {
-        // TODO - implement WorkerView.signIn
-        throw new UnsupportedOperationException();
     }
 }

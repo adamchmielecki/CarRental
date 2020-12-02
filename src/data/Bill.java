@@ -1,80 +1,52 @@
 package data;
 
+import java.time.LocalDateTime;
+
 public class Bill {
 
     private int ID;
     private float cost;
-    private float discount = 0.0;
-    private string date;
-    private float penalty = 0.0;
+    private float discount;
+    private LocalDateTime date;
+    private float penalty;
 
-    public void getID() {
-        // TODO - implement Bill.getID
-        throw new UnsupportedOperationException();
+    public int getID() {
+        return ID;
     }
 
-    /**
-     *
-     * @param ID
-     */
     public void setID(int ID) {
-        // TODO - implement Bill.setID
-        throw new UnsupportedOperationException();
+        this.ID = ID;
     }
 
-    public void getCost() {
-        // TODO - implement Bill.getCost
-        throw new UnsupportedOperationException();
+    public float getCost() {
+        return cost;
     }
 
-    /**
-     *
-     * @param Cost
-     */
-    public void setCost(int Cost) {
-        // TODO - implement Bill.setCost
-        throw new UnsupportedOperationException();
+    public void setCost(float cost) {
+        this.cost = cost;
     }
 
-    public void getDiscount() {
-        // TODO - implement Bill.getDiscount
-        throw new UnsupportedOperationException();
+    public float getDiscount() {
+        return discount;
     }
 
-    /**
-     *
-     * @param discount
-     */
-    public void setDiscount(int discount) {
-        // TODO - implement Bill.setDiscount
-        throw new UnsupportedOperationException();
+    public void setDiscount(float discount) {
+        this.discount = discount;
     }
 
-    public void getDate() {
-        // TODO - implement Bill.getDate
-        throw new UnsupportedOperationException();
+    public LocalDateTime getDate() {
+        return date;
     }
 
-    /**
-     *
-     * @param date
-     */
-    public void setDate(int date) {
-        // TODO - implement Bill.setDate
-        throw new UnsupportedOperationException();
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
-    public void getPenalty() {
-        // TODO - implement Bill.getPenalty
-        throw new UnsupportedOperationException();
+    public float getPenalty() {
+        return penalty;
     }
 
-    /**
-     *
-     * @param penalty
-     */
-    public void setPenalty(int penalty) {
-        // TODO - implement Bill.setPenalty
-        throw new UnsupportedOperationException();
+    public void setPenalty(float penalty) {
+        this.penalty = penalty;
     }
 }
