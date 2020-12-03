@@ -5,6 +5,8 @@ import data.Reservation;
 import data.Vehicle;
 import data.Department;
 
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -13,6 +15,12 @@ public class ClientView {
     private ArrayList<Vehicle> carList;
     private ArrayList<Department> departmentsList;
     private ArrayList<Reservation> reservationsList;
+    Statement stmt;
+
+
+    public ClientView() {
+        stmt = new Database().connect();
+    }
 
 
     public ArrayList<Vehicle> getCarList() {
@@ -44,33 +52,29 @@ public class ClientView {
     }
 
     public void register() {
-        Client client = new Client();
 
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter firstName: ");
-        String firstName = scanner.nextLine();
-        client.setFirstName(firstName);
+        try{
 
-        System.out.print("Enter lastName: ");
-        String lastName = scanner.nextLine();
-        client.setLastName(lastName);
-
-        System.out.print("Enter email: ");
-        String email = scanner.nextLine();
-        client.setEmail(email);
-
-        System.out.print("Enter login: ");
-        String login = scanner.nextLine();
-        client.setLogin(login);
-
-        System.out.print("Enter password: ");
-        String password = scanner.nextLine();
-        client.setPassword(password);
-
-        System.out.print("Enter phoneNumber: ");
-        String phoneNumber = scanner.nextLine();
-        client.setPhoneNumber(phoneNumber);
-
+            System.out.print("Enter first name: ");
+            String firstName = scanner.nextLine();
+            System.out.print("Enter last name: ");
+            String lastName = scanner.nextLine();
+            System.out.print("Enter PESEL: ");
+            String PESEL = scanner.nextLine();
+            System.out.print("Enter phone number: ");
+            String city = scanner.nextLine();
+            System.out.print("Enter city: ");
+            String phoneNumber = scanner.nextLine();
+            System.out.print("Enter street: ");
+            String street = scanner.nextLine();
+            System.out.print("Enter street number: ");
+            String streetNumber = scanner.nextLine();
+            System.out.print("Enter identity card number: ");
+            String idNumber = scanner.nextLine();
+            String q1 = "insert into PERSONAL_DATA values('" +12+ "', '" +firstName+ "', '" +lastName+ "', '" +PESEL+ "', '" +phoneNumber+ "', '" +city+ "', '" +street+ "', '" +streetNumber+ "', '" +idNumber+ "')";
+            stmt.executeUpdate(q1);
+        }catch(Exception e){System.out.println("ewffefwf");}
     }
 
     public void signIn() {
