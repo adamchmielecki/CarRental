@@ -8,7 +8,7 @@ import data.Client;
 
 public class WorkerView {
 
-    private ArrayList<Client> clientList;
+    /*private ArrayList<Client> clientList;
     private ArrayList<Vehicle> carList;
     private ArrayList<Rental> bookingList;
 
@@ -34,7 +34,7 @@ public class WorkerView {
 
     public void setBookingList(ArrayList<Rental> bookingList) {
         this.bookingList = bookingList;
-    }
+    }*/
 
     public void rentCar() {
     }
