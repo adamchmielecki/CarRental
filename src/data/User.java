@@ -3,7 +3,7 @@ package data;
 public class User {
 
     private int userID;
-    private int PESEL;
+    private String PESEL;
     private String firstName;
     private String lastName;
     private String phoneNumber;
@@ -20,11 +20,11 @@ public class User {
         this.userID = userID;
     }
 
-    public int getPESEL() {
+    public String getPESEL() {
         return PESEL;
     }
 
-    public void setPESEL(int PESEL) {
+    public void setPESEL(String PESEL) {
         this.PESEL = PESEL;
     }
 

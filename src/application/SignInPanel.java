@@ -36,10 +36,16 @@ public class SignInPanel {
     }
     private boolean verifyData(Statement stmt, int id_logowania, String enteredPassword) throws SQLException {
         if (id_logowania >= 0) {
-            String hashed = "SELECT password FROM Dane_logowania WHERE ID_dane_logowania = " + id_logowania;
+            String hashed = "SELECT USER_PASSWORD FROM LOGIN_DATA WHERE LOGIN_DATA_ID = " + id_logowania;
             ResultSet rs = stmt.executeQuery(hashed);
-            hashed = rs.getString("password");
-            if(BCrypt.checkpw(enteredPassword, hashed)) return true;
+            String correct_password = "";
+            while(rs.next()){
+                correct_password = rs.getString("USER_PASSWORD");
+            }
+            //if(BCrypt.checkpw(enteredPassword, correct_password)) return true;
+            if(enteredPassword.equals(correct_password)){
+                return true;
+            }
             else return false;
         }
         else {
@@ -53,13 +59,22 @@ public class SignInPanel {
     private void signIn(String userName, char[] password) throws SQLException {
         Statement stmt = new Database().connect();
         String enteredPassword = String.valueOf(password);
-        String login = "SELECT ID_dane_logowania FROM Dane_logowania WHERE login = " + userName;
+        String login = "SELECT LOGIN_DATA_ID FROM LOGIN_DATA WHERE USER_LOGIN = '" + userName + "'";
         ResultSet rs = stmt.executeQuery(login);
-        int id_logowania = rs.getInt("ID_dane_logowania");
+        int id_logowania = 0;
+        while(rs.next()){
+            id_logowania = rs.getInt("LOGIN_DATA_ID");
+        }
         if (verifyData(stmt, id_logowania, enteredPassword)) {
+            String sql = "SELECT CUSTOMER_ID FROM CUSTOMER WHERE CUSTOMER_LOGIN_DATA_ID = " + id_logowania;
+            rs = stmt.executeQuery(sql);
+            int customer_id = 0;
+            while(rs.next()){
+                customer_id = rs.getInt("CUSTOMER_ID");
+            }
             frame.setVisible(false);
             JFrame clientFrame = new JFrame("Wypożyczalnia pojazdów");
-            clientFrame.setContentPane(new ClientView().clientPanel);
+            clientFrame.setContentPane(new ClientView(customer_id).clientPanel);
             clientFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             clientFrame.pack();
             clientFrame.setVisible(true);

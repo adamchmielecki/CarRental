@@ -9,9 +9,15 @@ public class Database {
             Class.forName("oracle.jdbc.OracleDriver");
 
             Connection con=DriverManager.getConnection(
-                    "jdbc:oracle:thin:@localhost:1521:xe","hr","rune");
+                    "jdbc:oracle:thin:hr@localhost:1521/xe","hr","rune");
 
-            stmt=con.createStatement();
+            if (con != null) {
+                System.out.println("Connected to the database!");
+            } else {
+                System.out.println("Failed to make connection!");
+            }
+
+            stmt = con.createStatement();
         }catch(Exception e){ System.out.println(e);}
         return stmt;
     }
