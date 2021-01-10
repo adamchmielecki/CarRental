@@ -50,10 +50,10 @@ public class ClientView {
     int cusomer_id = -1;
     String sql = "";
     Client client;
-    Statement stmt = null;
-    public ClientView(int customer_id) throws SQLException {
+    Statement stmt;
+    public ClientView(int customer_id, Statement stmt) throws SQLException {
         client = new Client();
-        stmt = new Database().connect();
+        this.stmt = stmt;
         this.cusomer_id = customer_id;
         tabbedPane1.addComponentListener(new ComponentAdapter() {
         });
@@ -62,13 +62,20 @@ public class ClientView {
         myDataPanel.addComponentListener(new ComponentAdapter() {
         });
 
-        sql = "SELECT * from customer c join personal_data pd on pd.personal_data_id = c.customer_personal_data where c.customer_id =" + customer_id;
+        sql = "SELECT * from customer c \n" +
+                "join personal_data pd on pd.personal_data_id  = c.customer_personal_data \n" +
+                "join login_data l on l.login_data_id = c.customer_login_data_id\n" +
+                "where c.customer_id =" + customer_id;
         ResultSet rs = stmt.executeQuery(sql);
         while(rs.next()){
+
+
             client.setClientID(customer_id);
             client.setPersonalDataID(rs.getInt("CUSTOMER_PERSONAL_DATA"));
             client.setFirstName(rs.getString("FIRST_NAME"));
             client.setLastName(rs.getString("LAST_NAME"));
+            client.setLogin(rs.getString("USER_LOGIN"));
+            client.setPassword(rs.getString("USER_PASSWORD"));
             client.setPESEL(rs.getString("PESEL"));
             client.setAddress(rs.getString("STREET"));
             client.setCity(rs.getString("CITY"));
@@ -109,16 +116,16 @@ public class ClientView {
         });
 
 
-/*        deleteData.addActionListener(new ActionListener() {
+        deleteData.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFrame deleteDataFrame = new JFrame("Usuń konto");
-                deleteDataFrame.setContentPane(new ConfirmDeleting(client.getLogin(), client.getPassword()).deleteDataPanel);
+                deleteDataFrame.setContentPane(new ConfirmDeleting(client.getPersonalDataID(), client.getPassword(), stmt).deleteDataPanel);
                 deleteDataFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 deleteDataFrame.pack();
                 deleteDataFrame.setVisible(true);
             }
-        });*/
+        });
 
 /*
         showAvailableCarsBtn.addActionListener(new ActionListener() {

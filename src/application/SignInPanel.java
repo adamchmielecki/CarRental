@@ -10,13 +10,15 @@ import org.mindrot.jbcrypt.BCrypt;
 
 public class SignInPanel {
     static JFrame frame = new JFrame("Wypożyczalnia pojazdów");
-    private JPanel loginPanel;
+    public JPanel loginPanel;
+    static JFrame checkPanel = new JFrame("Wypożyczalnia pojazdów");
     private JTextField loginTextField;
     private JPasswordField hasloPasswordField;
     private JButton loginButton;
     private JButton registerButton;
-
+    Statement stmt;
     public SignInPanel() {
+        stmt = new Database().connect();
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -30,7 +32,11 @@ public class SignInPanel {
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null,"Rejestracja w przygotowaniu");
+                frame.setVisible(false);
+                checkPanel.setContentPane(new CheckPeselView(stmt).checkPeselPanel);
+                checkPanel.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                checkPanel.pack();
+                checkPanel.setVisible(true);
             }
         });
     }
@@ -57,7 +63,7 @@ public class SignInPanel {
     // szyfrowane hasło
 
     private void signIn(String userName, char[] password) throws SQLException {
-        Statement stmt = new Database().connect();
+
         String enteredPassword = String.valueOf(password);
         String login = "SELECT LOGIN_DATA_ID FROM LOGIN_DATA WHERE USER_LOGIN = '" + userName + "'";
         ResultSet rs = stmt.executeQuery(login);
@@ -74,7 +80,7 @@ public class SignInPanel {
             }
             frame.setVisible(false);
             JFrame clientFrame = new JFrame("Wypożyczalnia pojazdów");
-            clientFrame.setContentPane(new ClientView(customer_id).clientPanel);
+            clientFrame.setContentPane(new ClientView(customer_id, stmt).clientPanel);
             clientFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             clientFrame.pack();
             clientFrame.setVisible(true);
