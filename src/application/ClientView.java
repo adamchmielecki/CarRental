@@ -37,8 +37,6 @@ public class ClientView {
     private JButton showAvailableCarsBtn;
     private JTextField addressTextField;
     private JTextField cityTextField;
-    private JTextField postCodeTextField;
-    private JTextField emailTextField;
     private JTextField phoneTextField;
     private JButton deleteData;
     private JTable carsTable;
@@ -105,7 +103,7 @@ public class ClientView {
             public void actionPerformed(ActionEvent e) {
                 if(clicked==0) editData(e);
                 else {
-                    Client.modifyData(client, firstNameTextField.getText(), lastNameTextField.getText(), phoneTextField.getText(), emailTextField.getText(), postCodeTextField.getText(), cityTextField.getText(), addressTextField.getText());
+                    Client.modifyData(client, firstNameTextField.getText(), lastNameTextField.getText(), phoneTextField.getText(), cityTextField.getText(), addressTextField.getText());
                     try {
                         saveData(e);
                     } catch (SQLException throwables) {
@@ -120,7 +118,7 @@ public class ClientView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFrame deleteDataFrame = new JFrame("Usuń konto");
-                deleteDataFrame.setContentPane(new ConfirmDeleting(client.getPersonalDataID(), client.getPassword(), stmt).deleteDataPanel);
+                deleteDataFrame.setContentPane(new ConfirmDeleting(client.getPersonalDataID(), client.getLogin(), client.getPassword(), stmt).deleteDataPanel);
                 deleteDataFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 deleteDataFrame.pack();
                 deleteDataFrame.setVisible(true);
@@ -187,6 +185,17 @@ public class ClientView {
                 }
             }
         });*/
+        logOutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clientPanel.setVisible(false);
+                JOptionPane.showMessageDialog(null,"Wylogowano");
+                SignInPanel.frame.setContentPane(new SignInPanel().loginPanel);
+                SignInPanel.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                SignInPanel.frame.pack();
+                SignInPanel.frame.setVisible(true);
+            }
+        });
     }
 
     public boolean isDateValid(String dateStr) {
@@ -203,8 +212,6 @@ public class ClientView {
         lastNameTextField.setEditable(true);
         addressTextField.setEditable(true);
         cityTextField.setEditable(true);
-        postCodeTextField.setEditable(true);
-        emailTextField.setEditable(true);
         phoneTextField.setEditable(true);
         modifyDataButton.setText("Zapisz zmiany");
         clicked = 1;
@@ -224,8 +231,6 @@ public class ClientView {
         lastNameTextField.setEditable(false);
         addressTextField.setEditable(false);
         cityTextField.setEditable(false);
-        postCodeTextField.setEditable(false);
-        emailTextField.setEditable(false);
         phoneTextField.setEditable(false);
         modifyDataButton.setText("Edytuj dane");
         clicked=0;

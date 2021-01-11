@@ -41,13 +41,12 @@ public class Client extends User {
         this.drivingLicenseNumber = drivingLicenseNumber;
     }
 
-    public static void modifyData(Client client, String text, String firstName, String lastName, String phoneNumber, String postCode, String city, String address) {
+    public static void modifyData(Client client, String firstName, String lastName, String phoneNumber, String city, String address) {
         client.setFirstName(firstName);
         client.setLastName(lastName);
         client.setPhoneNumber(phoneNumber);
         client.setAddress(address);
         client.setCity(city);
-        client.setPostCode(postCode);
     }
 
     public int getPersonalDataID() {
