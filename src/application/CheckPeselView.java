@@ -1,6 +1,5 @@
 package application;
 
-import data.User;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

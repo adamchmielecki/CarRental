@@ -1,9 +1,7 @@
 package application;
 
 import java.util.ArrayList;
-import data.Vehicle;
-import data.Rental;
-import data.Client;
+
 
 
 public class WorkerView {

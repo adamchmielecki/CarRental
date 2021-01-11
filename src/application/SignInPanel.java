@@ -77,6 +77,7 @@ public class SignInPanel {
             int customer_id = 0;
             while(rs.next()){
                 customer_id = rs.getInt("CUSTOMER_ID");
+                System.out.println(customer_id);
             }
             frame.setVisible(false);
             JFrame clientFrame = new JFrame("Wypożyczalnia pojazdów");

@@ -1,6 +1,5 @@
 package application;
 
-import data.Client;
 
 import javax.swing.*;
 import java.awt.*;

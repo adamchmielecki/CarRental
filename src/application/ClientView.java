@@ -1,7 +1,4 @@
 package application;
-
-import data.Client;
-import data.Reservation;
 //import data.Status;
 
 import java.awt.event.ActionEvent;
@@ -47,12 +44,17 @@ public class ClientView {
     int selected_dep = -1;
     int cusomer_id = -1;
     String sql = "";
-    Client client;
     Statement stmt;
+    int c_ID;
+    int PD_ID;
+    String login;
+    String password;
     public ClientView(int customer_id, Statement stmt) throws SQLException {
-        client = new Client();
         this.stmt = stmt;
+        System.out.println(customer_id);
         this.cusomer_id = customer_id;
+        System.out.println(customer_id);
+
         tabbedPane1.addComponentListener(new ComponentAdapter() {
         });
         reservePanel.addComponentListener(new ComponentAdapter() {
@@ -67,26 +69,20 @@ public class ClientView {
         ResultSet rs = stmt.executeQuery(sql);
         while(rs.next()){
 
+            PD_ID = rs.getInt("CUSTOMER_PERSONAL_DATA");
+            login =rs.getString("USER_LOGIN");
+            password = (rs.getString("USER_PASSWORD"));
 
-            client.setClientID(customer_id);
-            client.setPersonalDataID(rs.getInt("CUSTOMER_PERSONAL_DATA"));
-            client.setFirstName(rs.getString("FIRST_NAME"));
-            client.setLastName(rs.getString("LAST_NAME"));
-            client.setLogin(rs.getString("USER_LOGIN"));
-            client.setPassword(rs.getString("USER_PASSWORD"));
-            client.setPESEL(rs.getString("PESEL"));
-            client.setAddress(rs.getString("STREET"));
-            client.setCity(rs.getString("CITY"));
-            client.setPhoneNumber(rs.getString("PHONE_NUMBER"));
+            IDtextField.setText(String.valueOf(customer_id));
+            firstNameTextField.setText(rs.getString("FIRST_NAME"));
+            lastNameTextField.setText(rs.getString("LAST_NAME"));
+            peselNameTextField.setText(rs.getString("PESEL"));
+            addressTextField.setText(rs.getString("STREET"));
+            cityTextField.setText(rs.getString("CITY"));
+            phoneTextField.setText(rs.getString("PHONE_NUMBER"));
         }
 
-        IDtextField.setText(String.valueOf(client.getClientID()));
-        firstNameTextField.setText(client.getFirstName());
-        lastNameTextField.setText(client.getLastName());
-        peselNameTextField.setText(client.getPESEL());
-        addressTextField.setText(client.getAddress());
-        cityTextField.setText(client.getCity());
-        phoneTextField.setText(client.getPhoneNumber());
+
 
 
 /*        String[] departments = new String[Facade.getDepartmentsList().size()];
@@ -103,7 +99,6 @@ public class ClientView {
             public void actionPerformed(ActionEvent e) {
                 if(clicked==0) editData(e);
                 else {
-                    Client.modifyData(client, firstNameTextField.getText(), lastNameTextField.getText(), phoneTextField.getText(), cityTextField.getText(), addressTextField.getText());
                     try {
                         saveData(e);
                     } catch (SQLException throwables) {
@@ -118,7 +113,7 @@ public class ClientView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFrame deleteDataFrame = new JFrame("Usuń konto");
-                deleteDataFrame.setContentPane(new ConfirmDeleting(client.getPersonalDataID(), client.getLogin(), client.getPassword(), stmt).deleteDataPanel);
+                deleteDataFrame.setContentPane(new ConfirmDeleting(PD_ID, login, password, stmt).deleteDataPanel);
                 deleteDataFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 deleteDataFrame.pack();
                 deleteDataFrame.setVisible(true);
@@ -223,7 +218,7 @@ public class ClientView {
                 + lastNameTextField.getText() + "', STREET = '"
                 + addressTextField.getText() + "', CITY = '"
                 + cityTextField.getText() + "', PHONE_NUMBER = '"
-                + phoneTextField.getText() + "' WHERE PERSONAL_DATA_ID = " + client.getPersonalDataID();
+                + phoneTextField.getText() + "' WHERE PERSONAL_DATA_ID = " + PD_ID;
         System.out.println(sql);
         stmt.executeUpdate(sql);
 
