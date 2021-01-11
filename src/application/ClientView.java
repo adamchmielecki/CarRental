@@ -4,6 +4,7 @@ package application;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
+import java.awt.event.ContainerAdapter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -39,6 +40,8 @@ public class ClientView {
     private JTable carsTable;
     private JButton reserveVehicle;
     private JButton logOutButton;
+    public JPanel rentalHistory;
+    private JTable rentalsTable;
 
     int clicked = 0;
     int selected_dep = -1;
@@ -62,11 +65,47 @@ public class ClientView {
         myDataPanel.addComponentListener(new ComponentAdapter() {
         });
 
+
+        String columns[] = {"Marka","Model","Data rozpoczęcia", "Data zakończenia", "Koszt"};
+        DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
+        Object rowData[] = new Object[5];
+
+        sql = "select count(CUSTOMER_ID) as s from client_rental_history where customer_id = " + customer_id;
+        ResultSet rs = stmt.executeQuery(sql);
+        int size = 0;
+        while(rs.next()){
+            size = rs.getInt("s");
+        }
+        sql = "select * from client_rental_history where customer_id = " + customer_id;
+        rs = stmt.executeQuery(sql);
+        for (int i=0; i<size; i++) {
+            if(size>0){
+                rs.next();
+                rowData[0] = rs.getString("CAR_BRAND");
+                rowData[1] = rs.getString("CAR_MODEL");
+                rowData[2] = rs.getString("START_DATE");
+                rowData[3] = rs.getString("END_DATE");
+                rowData[4] = rs.getString("COST_OF_RENT");
+                tableModel.addRow(rowData);
+            }
+            else {
+                rowData[0] = "";
+                rowData[1] = "";
+                rowData[2] = "";
+                rowData[3] = "";
+                rowData[4] = "";
+                tableModel.addRow(rowData);
+            }
+        }
+        rentalsTable.setModel(tableModel);
+
+
+
         sql = "SELECT * from customer c \n" +
                 "join personal_data pd on pd.personal_data_id  = c.customer_personal_data \n" +
                 "join login_data l on l.login_data_id = c.customer_login_data_id\n" +
                 "where c.customer_id =" + customer_id;
-        ResultSet rs = stmt.executeQuery(sql);
+        rs = stmt.executeQuery(sql);
         while(rs.next()){
 
             PD_ID = rs.getInt("CUSTOMER_PERSONAL_DATA");
@@ -191,6 +230,8 @@ public class ClientView {
                 SignInPanel.frame.setVisible(true);
             }
         });
+        rentalsTable.addContainerListener(new ContainerAdapter() {
+        });
     }
 
     public boolean isDateValid(String dateStr) {
@@ -254,8 +295,10 @@ public class ClientView {
 
     private void createUIComponents() {
         tabbedPane1 = new JTabbedPane();
+        rentalHistory = new JPanel();
         //showAvailableCarsBtn = new JButton();
         carsTable = new JTable();
+        rentalsTable = new JTable();
         comboBox = new JComboBox();
         deleteData = new JButton();
     }

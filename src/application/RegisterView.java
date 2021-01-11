@@ -97,7 +97,15 @@ public class RegisterView {
     }
 
     private void registerClient(String PESEL, String firstName, String lastName, String phoneNumber, String city, String address, String identityCardNumber, String drivingLicenseNumber, String login, char[] password) throws SQLException {
-        String sql = "INSERT INTO PERSONAL_DATA (PERSONAL_DATA_ID, FIRST_NAME, LAST_NAME, PESEL, PHONE_NUMBER, CITY, STREET, IDENTITY_CARD_NUMBER) VALUES (100, '"
+
+        String sql = "select max(PERSONAL_DATA_ID)+1 as maxID from PERSONAL_DATA";
+        ResultSet rs = stmt.executeQuery(sql);
+        int nextPersonalDataID = 1000;
+        while(rs.next()){
+            nextPersonalDataID = rs.getInt("maxID");
+        }
+        sql = "INSERT INTO PERSONAL_DATA (PERSONAL_DATA_ID, FIRST_NAME, LAST_NAME, PESEL, PHONE_NUMBER, CITY, STREET, IDENTITY_CARD_NUMBER) VALUES ("
+                +nextPersonalDataID + ",'"
                 +firstName + "','"
                 +lastName + "','"
                 +PESEL + "','"
@@ -105,15 +113,29 @@ public class RegisterView {
                 +city + "','"
                 +address + "','"
                 +identityCardNumber + "')";
-        System.out.println(sql);
         stmt.executeUpdate(sql);
-        sql = "INSERT INTO LOGIN_DATA (LOGIN_DATA_ID,USER_LOGIN,USER_PASSWORD) VALUES (100, '"
+        sql = "select max(LOGIN_DATA_ID)+1 as maxID from LOGIN_DATA";
+        rs = stmt.executeQuery(sql);
+        int nextLoginDataID = 1000;
+        while(rs.next()){
+            nextLoginDataID = rs.getInt("maxID");
+        }
+        sql = "INSERT INTO LOGIN_DATA (LOGIN_DATA_ID,USER_LOGIN,USER_PASSWORD) VALUES ("
+                +nextLoginDataID + ",'"
                 +login + "','"
                 +password + "')";
-        System.out.println(sql);
         stmt.executeUpdate(sql);
-        sql = "INSERT INTO CUSTOMER (CUSTOMER_ID, CUSTOMER_PERSONAL_DATA, DRIVING_LICENSE_NUMBER, CUSTOMER_LOGIN_DATA_ID) VALUES (100, 100, '999', 100)";
-        System.out.println(sql);
+        sql = "select max(CUSTOMER_ID)+1 as maxID from CUSTOMER";
+        rs = stmt.executeQuery(sql);
+        int nextCustomerID = 1000;
+        while(rs.next()){
+            nextCustomerID = rs.getInt("maxID");
+        }
+        sql = "INSERT INTO CUSTOMER (CUSTOMER_ID, CUSTOMER_PERSONAL_DATA, DRIVING_LICENSE_NUMBER, CUSTOMER_LOGIN_DATA_ID) VALUES ("
+                +nextCustomerID + ","
+                +nextPersonalDataID + ",'"
+                +drivingLicenseNumber + "',"
+                +nextLoginDataID + ")";
         stmt.executeUpdate(sql);
     }
 
