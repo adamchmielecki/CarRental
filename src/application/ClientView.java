@@ -212,13 +212,18 @@ public class ClientView {
             }
         });
 
-        /*reserveVehicle.addActionListener(new ActionListener() {
+        reserveVehicle.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (isDateValid(startDateTextField.getText()) && isDateValid(endDateTextField.getText())) {
                     if (LocalDate.parse(startDateTextField.getText()).isBefore(LocalDate.parse(endDateTextField.getText())) || LocalDate.parse(startDateTextField.getText()).isEqual(LocalDate.parse(endDateTextField.getText()))) {
-                        if (carsTable.getSelectedRow() > -1 && Facade.getDepartmentsList().get(comboBox.getSelectedIndex()).getVehicles().get(carsTable.getSelectedRow()).getStatus().equals(Status.AVAILABLE)) {
-                            JOptionPane.showMessageDialog(reservePanel, reserveCar(client));
+                        if (carsTable.getSelectedRow() > -1) {
+                            String[] department = String.valueOf(comboBox.getSelectedItem()).split(" ");
+                            try {
+                                JOptionPane.showMessageDialog(reservePanel, reserveCar(Integer.parseInt(department[0])));
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                            }
                         }
                         else {
                             JOptionPane.showMessageDialog(reservePanel, "Kliknij na wiersz z wybranym pojazdem!");
@@ -232,7 +237,7 @@ public class ClientView {
                     JOptionPane.showMessageDialog(reservePanel, "Zły format dat!");
                 }
             }
-        });*/
+        });
 
         logOutButton.addActionListener(new ActionListener() {
             @Override
@@ -298,16 +303,29 @@ public class ClientView {
     public void showReservations() {
     }
 
-    /*public String reserveCar(Client client) {
-        Reservation reservation = new Reservation();
-        reservation.setClient(client);
-        reservation.setStartDate(LocalDate.parse(startDateTextField.getText()));
-        reservation.setEndDate(LocalDate.parse(endDateTextField.getText()));
-        reservation.setVehicle(Facade.getDepartmentsList().get(comboBox.getSelectedIndex()).getVehicles().get(carsTable.getSelectedRow()));
-        Facade.getReservationList().add(reservation);
-        String confirmation = "Pomyślnie zarezerwowano pojazd " + reservation.getVehicle().getBrand() + " " + reservation.getVehicle().getModel() + " w terminie od " + reservation.getStartDate().toString() + " do " + reservation.getEndDate().toString() + ".";
+    public String reserveCar(int departmentID) throws SQLException {
+        int selectedRow = carsTable.getSelectedRow();
+        sql = "select max(RESERVATION_ID)+1 as maxID from RESERVATION";
+        ResultSet rs = stmt.executeQuery(sql);
+        int nextReservationID = 1000;
+        while(rs.next()){
+            nextReservationID = rs.getInt("maxID");
+        }
+        sql = "INSERT INTO RESERVATION (RESERVATION_ID,CUSTOMER_ID,DEPARTMENT_ID,START_DATE,END_DATE,VEHICLE_ID) VALUES ("
+                +nextReservationID + ",'"
+                +cusomer_id + "','"
+                +departmentID+ "',to_date('" + startDateTextField.getText() + "', 'yyyy-mm-dd'),to_date('" + endDateTextField.getText() + "', 'yyyy-mm-dd'),"
+                +String.valueOf(carsTable.getValueAt(selectedRow, 4)) + ")";
+        stmt.executeUpdate(sql);
+        sql = "UPDATE data_of_vehicle SET STATUS = 'zarezerwowany' WHERE VEHICLE_ID = " + carsTable.getValueAt(selectedRow, 4);
+        stmt.executeUpdate(sql);
+
+        sql = "select * from reservation where reservation_id = " + nextReservationID;
+        rs = stmt.executeQuery(sql);
+        rs.next();
+        String confirmation = "Pomyślnie zarezerwowano pojazd nr " + rs.getInt("VEHICLE_ID") + " w terminie od " + rs.getDate("START_DATE") + " do " + rs.getDate("END_DATE") + ".";
         return confirmation;
-    }*/
+    }
 
     private void createUIComponents() {
         tabbedPane1 = new JTabbedPane();
