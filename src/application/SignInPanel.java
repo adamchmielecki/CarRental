@@ -72,19 +72,24 @@ public class SignInPanel {
         while(rs.next()){
             id_logowania = rs.getInt("LOGIN_DATA_ID");
         }
-        if (verifyData(stmt, id_logowania, enteredPassword)) {
-            String sql = "SELECT CUSTOMER_ID FROM CUSTOMER WHERE CUSTOMER_LOGIN_DATA_ID = " + id_logowania;
-            rs = stmt.executeQuery(sql);
-            int customer_id = 0;
-            while(rs.next()){
-                customer_id = rs.getInt("CUSTOMER_ID");
-                System.out.println(customer_id);
+        if (id_logowania != 0) {
+            if (verifyData(stmt, id_logowania, enteredPassword)) {
+                String sql = "SELECT CUSTOMER_ID FROM CUSTOMER WHERE CUSTOMER_LOGIN_DATA_ID = " + id_logowania;
+                rs = stmt.executeQuery(sql);
+                int customer_id = 0;
+                while(rs.next()){
+                    customer_id = rs.getInt("CUSTOMER_ID");
+                    System.out.println(customer_id);
+                }
+                frame.setVisible(false);
+                clientFrame.setContentPane(new ClientView(customer_id, stmt).clientPanel);
+                clientFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                clientFrame.pack();
+                clientFrame.setVisible(true);
             }
-            frame.setVisible(false);
-            clientFrame.setContentPane(new ClientView(customer_id, stmt).clientPanel);
-            clientFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            clientFrame.pack();
-            clientFrame.setVisible(true);
+            else {
+                JOptionPane.showMessageDialog(null,"Niepoprawny login lub/i hasło");
+            }
         }
         else {
             JOptionPane.showMessageDialog(null,"Niepoprawny login lub/i hasło");
