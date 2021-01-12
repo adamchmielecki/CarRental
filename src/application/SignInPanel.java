@@ -12,6 +12,7 @@ public class SignInPanel {
     static JFrame frame = new JFrame("Wypożyczalnia pojazdów");
     public JPanel loginPanel;
     static JFrame checkPanel = new JFrame("Wypożyczalnia pojazdów");
+    static JFrame clientFrame = new JFrame("Wypożyczalnia pojazdów");
     private JTextField loginTextField;
     private JPasswordField hasloPasswordField;
     private JButton loginButton;
@@ -48,10 +49,10 @@ public class SignInPanel {
             while(rs.next()){
                 correct_password = rs.getString("USER_PASSWORD");
             }
-            //if(BCrypt.checkpw(enteredPassword, correct_password)) return true;
-            if(enteredPassword.equals(correct_password)){
-                return true;
-            }
+
+            /*if(BCrypt.checkpw(enteredPassword, "$2a$10$/hJ/Kl0r1C69PQskIMaXmuFizJeNF66J310uEk/2DbPfyHwQP1LWG")) return true;
+            else return false;*/
+            if(BCrypt.checkpw(enteredPassword, correct_password)) return true;
             else return false;
         }
         else {
@@ -59,8 +60,8 @@ public class SignInPanel {
         }
     }
 
-    //String hashed = BCrypt.hashpw("password", BCrypt.gensalt(12));  // https://www.mindrot.org/projects/jBCrypt/
-    // szyfrowane hasło
+    // String hashed = BCrypt.hashpw("password", BCrypt.gensalt(10));  // https://www.mindrot.org/projects/jBCrypt/
+    // tworzenie szyfrowanego hasła
 
     private void signIn(String userName, char[] password) throws SQLException {
 
@@ -80,7 +81,6 @@ public class SignInPanel {
                 System.out.println(customer_id);
             }
             frame.setVisible(false);
-            JFrame clientFrame = new JFrame("Wypożyczalnia pojazdów");
             clientFrame.setContentPane(new ClientView(customer_id, stmt).clientPanel);
             clientFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             clientFrame.pack();

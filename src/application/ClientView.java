@@ -39,6 +39,7 @@ public class ClientView {
     private JTable carsTable;
     private JButton reserveVehicle;
     private JButton logOutButton;
+    static JFrame deleteDataFrame = new JFrame("Usuwanie konta");
 
     int clicked = 0;
     int selected_dep = -1;
@@ -70,8 +71,8 @@ public class ClientView {
         while(rs.next()){
 
             PD_ID = rs.getInt("CUSTOMER_PERSONAL_DATA");
-            login =rs.getString("USER_LOGIN");
-            password = (rs.getString("USER_PASSWORD"));
+            login = rs.getString("USER_LOGIN");
+            password = rs.getString("USER_PASSWORD");
 
             IDtextField.setText(String.valueOf(customer_id));
             firstNameTextField.setText(rs.getString("FIRST_NAME"));
@@ -112,7 +113,7 @@ public class ClientView {
         deleteData.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame deleteDataFrame = new JFrame("Usuń konto");
+                SignInPanel.clientFrame.setVisible(false);
                 deleteDataFrame.setContentPane(new ConfirmDeleting(PD_ID, login, password, stmt).deleteDataPanel);
                 deleteDataFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 deleteDataFrame.pack();
@@ -183,7 +184,7 @@ public class ClientView {
         logOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                clientPanel.setVisible(false);
+                SignInPanel.clientFrame.setVisible(false);
                 JOptionPane.showMessageDialog(null,"Wylogowano");
                 SignInPanel.frame.setContentPane(new SignInPanel().loginPanel);
                 SignInPanel.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
