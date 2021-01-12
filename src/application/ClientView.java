@@ -124,14 +124,27 @@ public class ClientView {
 
 
 
+        sql = "select count(*) as c from departments";
+        rs = stmt.executeQuery(sql);
+        int departmentsCount = 0;
+        while(rs.next()){
+            departmentsCount = rs.getInt("c");
+        }
+        String[] departments = new String[departmentsCount];
 
-/*        String[] departments = new String[Facade.getDepartmentsList().size()];
-        for (int i=0; i<Facade.getDepartmentsList().size(); i++) {
-            departments[i] = Facade.getDepartmentsList().get(i).getCity();
+        sql = "select * from departments";
+        rs = stmt.executeQuery(sql);
+        int departmentID;
+        String departmentCity;
+        for (int i=0; i<departmentsCount; i++) {
+            rs.next();
+            departmentID = rs.getInt("DEPARTMENT_ID");
+            departmentCity = rs.getString("CITY");
+            departments[i] = String.valueOf(departmentID) + " - " + departmentCity;
         }
 
         DefaultComboBoxModel deparmentsModel = new DefaultComboBoxModel(departments);
-        comboBox.setModel(deparmentsModel);*/
+        comboBox.setModel(deparmentsModel);
 
 
         modifyDataButton.addActionListener(new ActionListener() {
@@ -160,30 +173,30 @@ public class ClientView {
             }
         });
 
-/*
         showAvailableCarsBtn.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)  {
                 if (isDateValid(startDateTextField.getText()) && isDateValid(endDateTextField.getText())) {
                     if (LocalDate.parse(startDateTextField.getText()).isBefore(LocalDate.parse(endDateTextField.getText())) || LocalDate.parse(startDateTextField.getText()).isEqual(LocalDate.parse(endDateTextField.getText()))) {
-                        String columns[] = {"Marka","Model","Rok produkcji", "Przebieg"};
+                        String columns[] = {"Marka","Model","Rok produkcji", "Przebieg", "ID pojazdu"};
                         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
-                        Object rowData[] = new Object[4];
-                        for (int i=0; i<Facade.getDepartmentsList().get(comboBox.getSelectedIndex()).getVehicles().size(); i++) {
-                            if (Facade.getDepartmentsList().get(comboBox.getSelectedIndex()).getVehicles().get(i).getStatus().equals(Status.AVAILABLE)) {
-                                rowData[0] = Facade.getDepartmentsList().get(comboBox.getSelectedIndex()).getVehicles().get(i).getBrand();
-                                rowData[1] = Facade.getDepartmentsList().get(comboBox.getSelectedIndex()).getVehicles().get(i).getModel();
-                                rowData[2] = Facade.getDepartmentsList().get(comboBox.getSelectedIndex()).getVehicles().get(i).getYearOfProduction();
-                                rowData[3] = Facade.getDepartmentsList().get(comboBox.getSelectedIndex()).getVehicles().get(i).getCarsMileage();
-                                tableModel.addRow(rowData);
+                        Object rowData[] = new Object[5];
+                        sql = "select VEHICLE_ID, DEPARTMENT_ID, STATUS, CAR_BRAND, CAR_MODEL, YEAR_OF_PRODUCTION, CARS_MILEAGE from cars natural join data_of_vehicle";
+                        try {
+                            ResultSet rs = stmt.executeQuery(sql);
+                            String[] department = String.valueOf(comboBox.getSelectedItem()).split(" ");
+                            while(rs.next()) {
+                                if (rs.getInt("DEPARTMENT_ID")==(Integer.parseInt(department[0])) && rs.getString("STATUS").equals("dostepny")) {
+                                    rowData[0] = rs.getString("CAR_BRAND");
+                                    rowData[1] = rs.getString("CAR_MODEL");
+                                    rowData[2] = rs.getInt("YEAR_OF_PRODUCTION");
+                                    rowData[3] = rs.getInt("CARS_MILEAGE");
+                                    rowData[4] = rs.getInt("VEHICLE_ID");
+                                    tableModel.addRow(rowData);
+                                }
                             }
-                            else {
-                                rowData[0] = "";
-                                rowData[1] = "";
-                                rowData[2] = "";
-                                rowData[3] = "";
-                                tableModel.addRow(rowData);
-                            }
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
                         }
                         carsTable.setModel(tableModel);
                     }
@@ -197,7 +210,7 @@ public class ClientView {
                     JOptionPane.showMessageDialog(reservePanel, "Zły format dat!");
                 }
             }
-        });*/
+        });
 
         /*reserveVehicle.addActionListener(new ActionListener() {
             @Override
@@ -220,6 +233,7 @@ public class ClientView {
                 }
             }
         });*/
+
         logOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -253,6 +267,7 @@ public class ClientView {
         modifyDataButton.setText("Zapisz zmiany");
         clicked = 1;
     }
+
     public void saveData(ActionEvent e) throws SQLException {
 
         sql = "UPDATE PERSONAL_DATA SET FIRST_NAME = '"
@@ -283,7 +298,7 @@ public class ClientView {
     public void showReservations() {
     }
 
-/*    public String reserveCar(Client client) {
+    /*public String reserveCar(Client client) {
         Reservation reservation = new Reservation();
         reservation.setClient(client);
         reservation.setStartDate(LocalDate.parse(startDateTextField.getText()));
