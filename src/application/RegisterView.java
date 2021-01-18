@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 
 public class RegisterView {
 
@@ -67,19 +68,19 @@ public class RegisterView {
     }
 
     public static boolean verifyPassword(char[] password){
-        if(password.length < 8) {
-            JOptionPane.showMessageDialog(null, "Hasło za krótkie");
+        if(!(Arrays.toString(password).matches("(?=.*[0-9])(?=.*[A-Z]).{8,}$"))) {
+            JOptionPane.showMessageDialog(null, "Hasło za słabe");
             return false;
         }
         return true;
     }
 
     public static boolean checkData(String firstName, String lastName, String phoneNumber, String idNumber, String drivingLicenseNumber){
-        if((firstName.length() == 0)/* || !(firstName.matches("[A-Za-z]"))*/){
+        if((firstName.length() == 0) || !(firstName.matches("[A-Z][a-zA-ZżźćńółęąśŻŹĆŚŁÓŃ]+"))){
             JOptionPane.showMessageDialog(null, "Niepoprawne dane(IMIĘ).");
             return false;
         }
-        if((lastName.length() == 0)/* || !(lastName.matches("[A-Za-z]"))*/){
+        if((lastName.length() == 0) || !(lastName.matches("[A-Z][a-zA-ZżźćńółęąśŻŹĆĄŚĘŁÓŃ]+"))){
             JOptionPane.showMessageDialog(null, "Niepoprawne dane(NAZWISKO).");
             return false;
         }

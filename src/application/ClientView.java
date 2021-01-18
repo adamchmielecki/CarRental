@@ -8,6 +8,8 @@ import java.awt.event.ContainerAdapter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
@@ -134,7 +136,7 @@ public class ClientView {
 
         sql = "select * from departments";
         rs = stmt.executeQuery(sql);
-        int departmentID;
+        int departmentID = 1;
         String departmentCity;
         for (int i=0; i<departmentsCount; i++) {
             rs.next();
@@ -153,7 +155,9 @@ public class ClientView {
                 if(clicked==0) editData(e);
                 else {
                     try {
-                        saveData(e);
+                        if(checkData(firstNameTextField.getText(), lastNameTextField.getText(), phoneTextField.getText()))
+                            saveData(e);
+
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
@@ -178,15 +182,36 @@ public class ClientView {
             public void actionPerformed(ActionEvent e)  {
                 if (isDateValid(startDateTextField.getText()) && isDateValid(endDateTextField.getText())) {
                     if (LocalDate.parse(startDateTextField.getText()).isBefore(LocalDate.parse(endDateTextField.getText())) || LocalDate.parse(startDateTextField.getText()).isEqual(LocalDate.parse(endDateTextField.getText()))) {
+                        int dpID = comboBox.getSelectedIndex()+1;
+                        String start_date = startDateTextField.getText();
+                        String end_date = endDateTextField.getText();
                         String columns[] = {"Marka","Model","Rok produkcji", "Przebieg", "ID pojazdu"};
                         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
                         Object rowData[] = new Object[5];
-                        sql = "select VEHICLE_ID, DEPARTMENT_ID, STATUS, CAR_BRAND, CAR_MODEL, YEAR_OF_PRODUCTION, CARS_MILEAGE from cars natural join data_of_vehicle";
+                        sql = //  "alter session set nls_date_format = 'RRRR-MM-DD'; \n" +
+                                "SELECT\n" +
+                                "distinct(dt.vehicle_id) as VEHICLE_ID, \n" +
+                                "c.CAR_BRAND as CAR_BRAND,\n" +
+                                "c.CAR_MODEL as CAR_MODEL,\n" +
+                                "dt.YEAR_OF_PRODUCTION as YEAR_OF_PRODUCTION,\n" +
+                                "dt.CARS_MILEAGE as CARS_MILEAGE,\n" +
+                                "dp.department_id as DEPARTMENT_ID\n" +
+                                "FROM\n" +
+                                "rental r\n" +
+                                "\n" +
+                                "JOIN DATA_OF_VEHICLE dt on dt.vehicle_id = r.vehicle_id\n" +
+                                "JOIN CARS c on c.CAR_ID = dt.CAR_ID\n" +
+                                "JOIN DEPARTMENTS dp on dp.DEPARTMENT_ID = dt.DEPARTMENT_ID\n" +
+                                "JOIN RESERVATION rs on rs.DEPARTMENT_ID = dp.DEPARTMENT_ID\n" +
+                                "WHERE dt.STATE_OF_CAR = 'sprawny' AND dp.DEPARTMENT_ID = " + dpID +"  and not ((r.start_date > '" + start_date + "' and r.end_date < '" + end_date + "') or (r.start_date < '" + start_date + "' and r.end_date > '" + end_date + "') or (r.end_date > '" + start_date + "' and r.end_date < '" + end_date + "') or (r.start_date > '" + start_date + "' and r.start_date < '" + end_date + "') or (rs.start_date > '" + start_date + "' and rs.end_date < '" + end_date + "') or (rs.start_date < '" + start_date + "' and rs.end_date > '" + end_date + "') or (rs.end_date > '" + start_date + "' and rs.end_date < '" + end_date + "') or (rs.start_date > '" + start_date + "' and rs.start_date < '" + end_date + "'))";
+
+
+                        System.out.println(sql);
                         try {
                             ResultSet rs = stmt.executeQuery(sql);
                             String[] department = String.valueOf(comboBox.getSelectedItem()).split(" ");
                             while(rs.next()) {
-                                if (rs.getInt("DEPARTMENT_ID")==(Integer.parseInt(department[0])) && rs.getString("STATUS").equals("dostepny")) {
+                                if (rs.getInt("DEPARTMENT_ID")==(Integer.parseInt(department[0]))) {
                                     rowData[0] = rs.getString("CAR_BRAND");
                                     rowData[1] = rs.getString("CAR_MODEL");
                                     rowData[2] = rs.getInt("YEAR_OF_PRODUCTION");
@@ -273,7 +298,25 @@ public class ClientView {
         clicked = 1;
     }
 
+    public static boolean checkData(String firstName, String lastName, String phoneNumber){
+        if((firstName.length() == 0) || !(firstName.matches("[A-Z][a-zA-ZżźćńółęąśŻŹĆŚŁÓŃ]+"))){
+            JOptionPane.showMessageDialog(null, "Niepoprawne dane(IMIĘ).");
+            return false;
+        }
+        if((lastName.length() == 0) || !(lastName.matches("[A-Z][a-zA-ZżźćńółęąśŻŹĆĄŚĘŁÓŃ]+"))){
+            JOptionPane.showMessageDialog(null, "Niepoprawne dane(NAZWISKO).");
+            return false;
+        }
+        if((phoneNumber.length() != 9) || !(phoneNumber.matches("\\d+"))){
+            JOptionPane.showMessageDialog(null, "Niepoprawne dane(TELEFON).");
+            return false;
+        }
+        return true;
+    }
+
     public void saveData(ActionEvent e) throws SQLException {
+
+
 
         sql = "UPDATE PERSONAL_DATA SET FIRST_NAME = '"
                 + firstNameTextField.getText() + "', LAST_NAME = '"
@@ -292,15 +335,6 @@ public class ClientView {
         modifyDataButton.setText("Edytuj dane");
         clicked=0;
 
-    }
-
-    public void logOut() {
-    }
-
-    public void cancelReservation() {
-    }
-
-    public void showReservations() {
     }
 
     public String reserveCar(int departmentID) throws SQLException {
