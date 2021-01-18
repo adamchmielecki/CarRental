@@ -45,6 +45,8 @@ public class ClientView {
     static JFrame deleteDataFrame = new JFrame("Usuwanie konta");
     public JPanel rentalHistory;
     private JTable rentalsTable;
+    private JPanel reservationsPanel;
+    private JTable reservationsTable;
 
     int clicked = 0;
     int selected_dep = -1;
@@ -55,6 +57,7 @@ public class ClientView {
     int PD_ID;
     String login;
     String password;
+    ResultSet rs;
     public ClientView(int customer_id, Statement stmt) throws SQLException {
         this.stmt = stmt;
         System.out.println(customer_id);
@@ -69,38 +72,11 @@ public class ClientView {
         });
 
 
-        String columns[] = {"Marka","Model","Data rozpoczęcia", "Data zakończenia", "Koszt"};
-        DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
-        Object rowData[] = new Object[5];
 
-        sql = "select count(CUSTOMER_ID) as s from client_rental_history where customer_id = " + customer_id;
-        ResultSet rs = stmt.executeQuery(sql);
-        int size = 0;
-        while(rs.next()){
-            size = rs.getInt("s");
-        }
-        sql = "select * from client_rental_history where customer_id = " + customer_id;
-        rs = stmt.executeQuery(sql);
-        for (int i=0; i<size; i++) {
-            if(size>0){
-                rs.next();
-                rowData[0] = rs.getString("CAR_BRAND");
-                rowData[1] = rs.getString("CAR_MODEL");
-                rowData[2] = rs.getString("START_DATE");
-                rowData[3] = rs.getString("END_DATE");
-                rowData[4] = rs.getString("COST_OF_RENT");
-                tableModel.addRow(rowData);
-            }
-            else {
-                rowData[0] = "";
-                rowData[1] = "";
-                rowData[2] = "";
-                rowData[3] = "";
-                rowData[4] = "";
-                tableModel.addRow(rowData);
-            }
-        }
-        rentalsTable.setModel(tableModel);
+
+        showAvaiableCars(rs, customer_id);
+
+        showReservations(rs, customer_id);
 
 
 
@@ -369,13 +345,83 @@ public class ClientView {
         rs = stmt.executeQuery(sql);
         rs.next();
         String confirmation = "Pomyślnie zarezerwowano pojazd nr " + rs.getInt("VEHICLE_ID") + " w terminie od " + rs.getDate("START_DATE") + " do " + rs.getDate("END_DATE") + ".";
+        showReservations(rs, cusomer_id);
         return confirmation;
+    }
+
+    public void showAvaiableCars(ResultSet rs, int customer_id) throws SQLException {
+        String columns[] = {"Marka","Model","Data rozpoczęcia", "Data zakończenia", "Koszt"};
+        DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
+        Object rowData[] = new Object[5];
+
+        sql = "select count(CUSTOMER_ID) as s from client_rental_history where customer_id = " + customer_id;
+        rs = stmt.executeQuery(sql);
+        int size = 0;
+        while(rs.next()){
+            size = rs.getInt("s");
+        }
+        sql = "select * from client_rental_history where customer_id = " + customer_id;
+        rs = stmt.executeQuery(sql);
+        for (int i=0; i<size; i++) {
+            if(size>0){
+                rs.next();
+                rowData[0] = rs.getString("CAR_BRAND");
+                rowData[1] = rs.getString("CAR_MODEL");
+                rowData[2] = rs.getString("START_DATE");
+                rowData[3] = rs.getString("END_DATE");
+                rowData[4] = rs.getString("COST_OF_RENT");
+                tableModel.addRow(rowData);
+            }
+            else {
+                rowData[0] = "";
+                rowData[1] = "";
+                rowData[2] = "";
+                rowData[3] = "";
+                rowData[4] = "";
+                tableModel.addRow(rowData);
+            }
+        }
+        rentalsTable.setModel(tableModel);
+    }
+
+    public void showReservations(ResultSet rs, int customer_id) throws SQLException {
+        String columns2[] = {"Marka","Model","Data rozpoczęcia", "Data zakończenia"};
+        DefaultTableModel tableModel2 = new DefaultTableModel(columns2, 0);
+        Object rowData2[] = new Object[4];
+
+        sql = "select count(CUSTOMER_ID) as s from CLIENT_RESERVATIONS where customer_id = " + customer_id + " and end_date > sysdate";
+        rs = stmt.executeQuery(sql);
+        int size2 = 0;
+        while(rs.next()){
+            size2 = rs.getInt("s");
+        }
+        sql = "select * from CLIENT_RESERVATIONS where customer_id = " + customer_id  + " and end_date > sysdate";
+        rs = stmt.executeQuery(sql);
+        for (int i=0; i<size2; i++) {
+            if(size2>0){
+                rs.next();
+                rowData2[0] = rs.getString("CAR_BRAND");
+                rowData2[1] = rs.getString("CAR_MODEL");
+                rowData2[2] = rs.getString("START_DATE");
+                rowData2[3] = rs.getString("END_DATE");
+                tableModel2.addRow(rowData2);
+            }
+            else {
+                rowData2[0] = "";
+                rowData2[1] = "";
+                rowData2[2] = "";
+                rowData2[3] = "";
+                rowData2[4] = "";
+                tableModel2.addRow(rowData2);
+            }
+        }
+        reservationsTable.setModel(tableModel2);
     }
 
     private void createUIComponents() {
         tabbedPane1 = new JTabbedPane();
         rentalHistory = new JPanel();
-        //showAvailableCarsBtn = new JButton();
+        reservationsTable = new JTable();
         carsTable = new JTable();
         rentalsTable = new JTable();
         comboBox = new JComboBox();
