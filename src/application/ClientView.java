@@ -181,53 +181,59 @@ public class ClientView {
             @Override
             public void actionPerformed(ActionEvent e)  {
                 if (isDateValid(startDateTextField.getText()) && isDateValid(endDateTextField.getText())) {
-                    if (LocalDate.parse(startDateTextField.getText()).isBefore(LocalDate.parse(endDateTextField.getText())) || LocalDate.parse(startDateTextField.getText()).isEqual(LocalDate.parse(endDateTextField.getText()))) {
-                        int dpID = comboBox.getSelectedIndex()+1;
-                        String start_date = startDateTextField.getText();
-                        String end_date = endDateTextField.getText();
-                        String columns[] = {"Marka","Model","Rok produkcji", "Przebieg", "ID pojazdu"};
-                        DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
-                        Object rowData[] = new Object[5];
-                        sql = //  "alter session set nls_date_format = 'RRRR-MM-DD'; \n" +
-                                "SELECT\n" +
-                                "distinct(dt.vehicle_id) as VEHICLE_ID, \n" +
-                                "c.CAR_BRAND as CAR_BRAND,\n" +
-                                "c.CAR_MODEL as CAR_MODEL,\n" +
-                                "dt.YEAR_OF_PRODUCTION as YEAR_OF_PRODUCTION,\n" +
-                                "dt.CARS_MILEAGE as CARS_MILEAGE,\n" +
-                                "dp.department_id as DEPARTMENT_ID\n" +
-                                "FROM\n" +
-                                "rental r\n" +
-                                "\n" +
-                                "JOIN DATA_OF_VEHICLE dt on dt.vehicle_id = r.vehicle_id\n" +
-                                "JOIN CARS c on c.CAR_ID = dt.CAR_ID\n" +
-                                "JOIN DEPARTMENTS dp on dp.DEPARTMENT_ID = dt.DEPARTMENT_ID\n" +
-                                "JOIN RESERVATION rs on rs.DEPARTMENT_ID = dp.DEPARTMENT_ID\n" +
-                                "WHERE dt.STATE_OF_CAR = 'sprawny' AND dp.DEPARTMENT_ID = " + dpID +"  and not ((r.start_date > '" + start_date + "' and r.end_date < '" + end_date + "') or (r.start_date < '" + start_date + "' and r.end_date > '" + end_date + "') or (r.end_date > '" + start_date + "' and r.end_date < '" + end_date + "') or (r.start_date > '" + start_date + "' and r.start_date < '" + end_date + "') or (rs.start_date > '" + start_date + "' and rs.end_date < '" + end_date + "') or (rs.start_date < '" + start_date + "' and rs.end_date > '" + end_date + "') or (rs.end_date > '" + start_date + "' and rs.end_date < '" + end_date + "') or (rs.start_date > '" + start_date + "' and rs.start_date < '" + end_date + "'))";
+                    if (LocalDate.now().isBefore(LocalDate.parse(startDateTextField.getText())) || LocalDate.parse(startDateTextField.getText()).isEqual(LocalDate.now())) {
+                        if (LocalDate.parse(startDateTextField.getText()).isBefore(LocalDate.parse(endDateTextField.getText())) || LocalDate.parse(startDateTextField.getText()).isEqual(LocalDate.parse(endDateTextField.getText()))) {
+                            int dpID = comboBox.getSelectedIndex()+1;
+                            String start_date = startDateTextField.getText();
+                            String end_date = endDateTextField.getText();
+                            String columns[] = {"Marka","Model","Rok produkcji", "Przebieg", "ID pojazdu"};
+                            DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
+                            Object rowData[] = new Object[5];
+                            sql = //  "alter session set nls_date_format = 'RRRR-MM-DD'; \n" +
+                                    "SELECT\n" +
+                                            "distinct(dt.vehicle_id) as VEHICLE_ID, \n" +
+                                            "c.CAR_BRAND as CAR_BRAND,\n" +
+                                            "c.CAR_MODEL as CAR_MODEL,\n" +
+                                            "dt.YEAR_OF_PRODUCTION as YEAR_OF_PRODUCTION,\n" +
+                                            "dt.CARS_MILEAGE as CARS_MILEAGE,\n" +
+                                            "dp.department_id as DEPARTMENT_ID\n" +
+                                            "FROM\n" +
+                                            "rental r\n" +
+                                            "\n" +
+                                            "JOIN DATA_OF_VEHICLE dt on dt.vehicle_id = r.vehicle_id\n" +
+                                            "JOIN CARS c on c.CAR_ID = dt.CAR_ID\n" +
+                                            "JOIN DEPARTMENTS dp on dp.DEPARTMENT_ID = dt.DEPARTMENT_ID\n" +
+                                            "JOIN RESERVATION rs on rs.DEPARTMENT_ID = dp.DEPARTMENT_ID\n" +
+                                            "WHERE dt.STATE_OF_CAR = 'sprawny' AND dp.DEPARTMENT_ID = " + dpID +"  and not ((r.start_date > '" + start_date + "' and r.end_date < '" + end_date + "') or (r.start_date < '" + start_date + "' and r.end_date > '" + end_date + "') or (r.end_date > '" + start_date + "' and r.end_date < '" + end_date + "') or (r.start_date > '" + start_date + "' and r.start_date < '" + end_date + "') or (rs.start_date > '" + start_date + "' and rs.end_date < '" + end_date + "') or (rs.start_date < '" + start_date + "' and rs.end_date > '" + end_date + "') or (rs.end_date > '" + start_date + "' and rs.end_date < '" + end_date + "') or (rs.start_date > '" + start_date + "' and rs.start_date < '" + end_date + "'))";
 
 
-                        System.out.println(sql);
-                        try {
-                            ResultSet rs = stmt.executeQuery(sql);
-                            String[] department = String.valueOf(comboBox.getSelectedItem()).split(" ");
-                            while(rs.next()) {
-                                if (rs.getInt("DEPARTMENT_ID")==(Integer.parseInt(department[0]))) {
-                                    rowData[0] = rs.getString("CAR_BRAND");
-                                    rowData[1] = rs.getString("CAR_MODEL");
-                                    rowData[2] = rs.getInt("YEAR_OF_PRODUCTION");
-                                    rowData[3] = rs.getInt("CARS_MILEAGE");
-                                    rowData[4] = rs.getInt("VEHICLE_ID");
-                                    tableModel.addRow(rowData);
+                            System.out.println(sql);
+                            try {
+                                ResultSet rs = stmt.executeQuery(sql);
+                                String[] department = String.valueOf(comboBox.getSelectedItem()).split(" ");
+                                while(rs.next()) {
+                                    if (rs.getInt("DEPARTMENT_ID")==(Integer.parseInt(department[0]))) {
+                                        rowData[0] = rs.getString("CAR_BRAND");
+                                        rowData[1] = rs.getString("CAR_MODEL");
+                                        rowData[2] = rs.getInt("YEAR_OF_PRODUCTION");
+                                        rowData[3] = rs.getInt("CARS_MILEAGE");
+                                        rowData[4] = rs.getInt("VEHICLE_ID");
+                                        tableModel.addRow(rowData);
+                                    }
                                 }
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
                             }
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
+                            carsTable.setModel(tableModel);
                         }
-                        carsTable.setModel(tableModel);
+
+                        else {
+                            JOptionPane.showMessageDialog(reservePanel, "Błędna chronologia dat!");
+                        }
                     }
 
                     else {
-                        JOptionPane.showMessageDialog(reservePanel, "Błędna chronologia dat!");
+                        JOptionPane.showMessageDialog(reservePanel, "Wprowadzono datę rozpoczęcia z przeszłości!");
                     }
                 }
 
@@ -241,21 +247,26 @@ public class ClientView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (isDateValid(startDateTextField.getText()) && isDateValid(endDateTextField.getText())) {
-                    if (LocalDate.parse(startDateTextField.getText()).isBefore(LocalDate.parse(endDateTextField.getText())) || LocalDate.parse(startDateTextField.getText()).isEqual(LocalDate.parse(endDateTextField.getText()))) {
-                        if (carsTable.getSelectedRow() > -1) {
-                            String[] department = String.valueOf(comboBox.getSelectedItem()).split(" ");
-                            try {
-                                JOptionPane.showMessageDialog(reservePanel, reserveCar(Integer.parseInt(department[0])));
-                            } catch (SQLException throwables) {
-                                throwables.printStackTrace();
+                    if (LocalDate.now().isBefore(LocalDate.parse(startDateTextField.getText())) || LocalDate.parse(startDateTextField.getText()).isEqual(LocalDate.now())) {
+                        if (LocalDate.parse(startDateTextField.getText()).isBefore(LocalDate.parse(endDateTextField.getText())) || LocalDate.parse(startDateTextField.getText()).isEqual(LocalDate.parse(endDateTextField.getText()))) {
+                            if (carsTable.getSelectedRow() > -1) {
+                                String[] department = String.valueOf(comboBox.getSelectedItem()).split(" ");
+                                try {
+                                    JOptionPane.showMessageDialog(reservePanel, reserveCar(Integer.parseInt(department[0])));
+                                } catch (SQLException throwables) {
+                                    throwables.printStackTrace();
+                                }
+                            }
+                            else {
+                                JOptionPane.showMessageDialog(reservePanel, "Kliknij na wiersz z wybranym pojazdem!");
                             }
                         }
                         else {
-                            JOptionPane.showMessageDialog(reservePanel, "Kliknij na wiersz z wybranym pojazdem!");
+                            JOptionPane.showMessageDialog(reservePanel, "Błędna chronologia dat!");
                         }
                     }
                     else {
-                        JOptionPane.showMessageDialog(reservePanel, "Błędna chronologia dat!");
+                        JOptionPane.showMessageDialog(reservePanel, "Wprowadzono datę rozpoczęcia z przeszłości!");
                     }
                 }
                 else {

@@ -33,11 +33,11 @@ public class SignInPanel {
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.setVisible(false);
-                checkPanel.setContentPane(new CheckPeselView(stmt).checkPeselPanel);
-                checkPanel.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                checkPanel.pack();
-                checkPanel.setVisible(true);
+                //frame.setVisible(false);
+                frame.setContentPane(new CheckPeselView(stmt).checkPeselPanel);
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.pack();
+                //checkPanel.setVisible(true);
             }
         });
     }
@@ -88,11 +88,11 @@ public class SignInPanel {
                 clientFrame.setVisible(true);
             }
             else {
-                JOptionPane.showMessageDialog(null,"Niepoprawny login lub/i hasło");
+                JOptionPane.showMessageDialog(frame,"Niepoprawny login lub/i hasło");
             }
         }
         else {
-            JOptionPane.showMessageDialog(null,"Niepoprawny login lub/i hasło");
+            JOptionPane.showMessageDialog(frame,"Niepoprawny login lub/i hasło");
         }
     }
 

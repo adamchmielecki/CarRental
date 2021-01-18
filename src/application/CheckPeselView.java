@@ -24,26 +24,26 @@ public class CheckPeselView {
                         ResultSet rs = stmt.executeQuery(sql);
                         System.out.println(rs);
                         if (!rs.next()) {
-                            SignInPanel.checkPanel.setVisible(false);
-                            registerFrame.setContentPane(new RegisterView(enterPESEL.getText(), stmt).registerPanel);
-                            registerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                            registerFrame.pack();
-                            registerFrame.setVisible(true);
+                            //SignInPanel.checkPanel.setVisible(false);
+                            SignInPanel.frame.setContentPane(new RegisterView(enterPESEL.getText(), stmt).registerPanel);
+                            SignInPanel.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                            SignInPanel.frame.pack();
+                            //registerFrame.setVisible(true);
                         }
                         else {
 
                             JOptionPane.showMessageDialog(SignInPanel.checkPanel,"Istnieje już konto użytkownika o takim samym numerze PESEL!");
-                            SignInPanel.checkPanel.setVisible(false);
+                            //SignInPanel.checkPanel.setVisible(false);
                             SignInPanel.frame.setContentPane(new SignInPanel().loginPanel);
                             SignInPanel.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                             SignInPanel.frame.pack();
-                            SignInPanel.frame.setVisible(true);
+                            //SignInPanel.frame.setVisible(true);
                         }
 
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
-                }else{JOptionPane.showMessageDialog(null, "Niepoprawny numer PESEL.");}
+                }else{JOptionPane.showMessageDialog(checkPeselPanel, "Niepoprawny numer PESEL.");}
 
 
             }

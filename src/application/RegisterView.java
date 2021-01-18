@@ -37,12 +37,12 @@ public class RegisterView {
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
-                    CheckPeselView.registerFrame.setVisible(false);
-                    JOptionPane.showMessageDialog(CheckPeselView.registerFrame,"Pomyślnie zarejestrowano nowego użytkownika!");
+                    //CheckPeselView.registerFrame.setVisible(false);
+                    JOptionPane.showMessageDialog(SignInPanel.frame,"Pomyślnie zarejestrowano nowego użytkownika!");
                     SignInPanel.frame.setContentPane(new SignInPanel().loginPanel);
                     SignInPanel.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     SignInPanel.frame.pack();
-                    SignInPanel.frame.setVisible(true);
+                    //SignInPanel.frame.setVisible(true);
                 }
             }
         });
@@ -57,7 +57,7 @@ public class RegisterView {
                 return true;
             }
             else {
-                JOptionPane.showMessageDialog(null,"Wybierz inny login");
+                JOptionPane.showMessageDialog(SignInPanel.frame,"Wybierz inny login");
                 return false;
             }
 
@@ -69,7 +69,7 @@ public class RegisterView {
 
     public static boolean verifyPassword(char[] password){
         if(!(Arrays.toString(password).matches("(?=.*[0-9])(?=.*[A-Z]).{8,}$"))) {
-            JOptionPane.showMessageDialog(null, "Hasło za słabe");
+            JOptionPane.showMessageDialog(SignInPanel.frame, "Hasło za słabe (musi zawierać minimum: cyfrę, dużą literę i 8 znaków)");
             return false;
         }
         return true;
@@ -77,23 +77,23 @@ public class RegisterView {
 
     public static boolean checkData(String firstName, String lastName, String phoneNumber, String idNumber, String drivingLicenseNumber){
         if((firstName.length() == 0) || !(firstName.matches("[A-Z][a-zA-ZżźćńółęąśŻŹĆŚŁÓŃ]+"))){
-            JOptionPane.showMessageDialog(null, "Niepoprawne dane(IMIĘ).");
+            JOptionPane.showMessageDialog(SignInPanel.frame, "Niepoprawne dane(IMIĘ).");
             return false;
         }
         if((lastName.length() == 0) || !(lastName.matches("[A-Z][a-zA-ZżźćńółęąśŻŹĆĄŚĘŁÓŃ]+"))){
-            JOptionPane.showMessageDialog(null, "Niepoprawne dane(NAZWISKO).");
+            JOptionPane.showMessageDialog(SignInPanel.frame, "Niepoprawne dane(NAZWISKO).");
             return false;
         }
         if((phoneNumber.length() != 9) || !(phoneNumber.matches("\\d+"))){
-            JOptionPane.showMessageDialog(null, "Niepoprawne dane(TELEFON).");
+            JOptionPane.showMessageDialog(SignInPanel.frame, "Niepoprawne dane(TELEFON).");
             return false;
         }
         if(idNumber.length() == 0){
-            JOptionPane.showMessageDialog(null, "Pole NR DOWODU OSOBISTEGO nie moze być puste.");
+            JOptionPane.showMessageDialog(SignInPanel.frame, "Pole NR DOWODU OSOBISTEGO nie moze być puste.");
             return false;
         }
         if(drivingLicenseNumber.length() == 0){
-            JOptionPane.showMessageDialog(null, "Pole NR PRAWA JAZDY nie moze być puste.");
+            JOptionPane.showMessageDialog(SignInPanel.frame, "Pole NR PRAWA JAZDY nie moze być puste.");
             return false;
         }
         return true;
