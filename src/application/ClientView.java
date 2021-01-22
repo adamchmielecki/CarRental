@@ -154,54 +154,7 @@ public class ClientView {
         showAvailableCarsBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e)  {
-                if (isDateValid(startDateTextField.getText()) && isDateValid(endDateTextField.getText())) {
-                    if (LocalDate.now().isBefore(LocalDate.parse(startDateTextField.getText())) || LocalDate.parse(startDateTextField.getText()).isEqual(LocalDate.now())) {
-                        if (LocalDate.parse(startDateTextField.getText()).isBefore(LocalDate.parse(endDateTextField.getText())) || LocalDate.parse(startDateTextField.getText()).isEqual(LocalDate.parse(endDateTextField.getText()))) {
-                            int dpID = comboBox.getSelectedIndex()+1;
-                            String start_date = startDateTextField.getText();
-                            String end_date = endDateTextField.getText();
-                            String columns[] = {"Marka","Model","Rok produkcji", "Przebieg", "ID pojazdu"};
-                            DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
-                            Object rowData[] = new Object[5];
-                            sql = "SELECT c.car_brand AS CAR_BRAND, c.car_model AS CAR_MODEL, dt.year_of_production AS YEAR_OF_PRODUCTION, dt.cars_mileage AS CARS_MILEAGE, dt.vehicle_id AS VEHICLE_ID, dt.department_id as department_id \n" +
-                                    "FROM data_of_vehicle dt \n" +
-                                    "join cars c on c.car_id = dt.car_id \n" +
-                                    "where dt.department_id = " + dpID + " and dt.state_of_car = 'sprawny' and  dt.vehicle_id \n" +
-                                    "not in (select (vehicle_id) from reservation where ((start_date <= '" + start_date + "' and end_date >= '" + end_date + "') or (start_date >= '" + start_date + "' and start_date <= '" + end_date + "') or (end_date >= '" + start_date + "' and end_date <= '" + end_date + "'))) and dt.vehicle_id \n" +
-                                    "not in (select (vehicle_id) from rental where ((start_date <= '" + start_date + "' and end_date >= '" + end_date + "') or (start_date >= '" + start_date + "' and start_date <= '" + end_date + "') or (end_date >= '" + start_date + "' and end_date <= '" + end_date + "')))";
-                            System.out.println(sql);
-                            try {
-                                ResultSet rs = stmt.executeQuery(sql);
-                                String[] department = String.valueOf(comboBox.getSelectedItem()).split(" ");
-                                while(rs.next()) {
-                                    if (rs.getInt("DEPARTMENT_ID")==(Integer.parseInt(department[0]))) {
-                                        rowData[0] = rs.getString("CAR_BRAND");
-                                        rowData[1] = rs.getString("CAR_MODEL");
-                                        rowData[2] = rs.getInt("YEAR_OF_PRODUCTION");
-                                        rowData[3] = rs.getInt("CARS_MILEAGE");
-                                        rowData[4] = rs.getInt("VEHICLE_ID");
-                                        tableModel.addRow(rowData);
-                                    }
-                                }
-                            } catch (SQLException throwables) {
-                                throwables.printStackTrace();
-                            }
-                            carsTable.setModel(tableModel);
-                        }
-
-                        else {
-                            JOptionPane.showMessageDialog(reservePanel, "Błędna chronologia dat!");
-                        }
-                    }
-
-                    else {
-                        JOptionPane.showMessageDialog(reservePanel, "Wprowadzono datę rozpoczęcia z przeszłości!");
-                    }
-                }
-
-                else {
-                    JOptionPane.showMessageDialog(reservePanel, "Zły format dat!");
-                }
+                showAvailableCars();
             }
         });
 
@@ -332,7 +285,59 @@ public class ClientView {
         rs.next();
         String confirmation = "Pomyślnie zarezerwowano pojazd nr " + rs.getInt("VEHICLE_ID") + " w terminie od " + rs.getDate("START_DATE") + " do " + rs.getDate("END_DATE") + ".";
         showReservations(cusomer_id);
+        showAvailableCars();
         return confirmation;
+    }
+
+    public void showAvailableCars(){
+        if (isDateValid(startDateTextField.getText()) && isDateValid(endDateTextField.getText())) {
+            if (LocalDate.now().isBefore(LocalDate.parse(startDateTextField.getText())) || LocalDate.parse(startDateTextField.getText()).isEqual(LocalDate.now())) {
+                if (LocalDate.parse(startDateTextField.getText()).isBefore(LocalDate.parse(endDateTextField.getText())) || LocalDate.parse(startDateTextField.getText()).isEqual(LocalDate.parse(endDateTextField.getText()))) {
+                    int dpID = comboBox.getSelectedIndex()+1;
+                    String start_date = startDateTextField.getText();
+                    String end_date = endDateTextField.getText();
+                    String columns[] = {"Marka","Model","Rok produkcji", "Przebieg", "ID pojazdu"};
+                    DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
+                    Object rowData[] = new Object[5];
+                    sql = "SELECT c.car_brand AS CAR_BRAND, c.car_model AS CAR_MODEL, dt.year_of_production AS YEAR_OF_PRODUCTION, dt.cars_mileage AS CARS_MILEAGE, dt.vehicle_id AS VEHICLE_ID, dt.department_id as department_id \n" +
+                            "FROM data_of_vehicle dt \n" +
+                            "join cars c on c.car_id = dt.car_id \n" +
+                            "where dt.department_id = " + dpID + " and dt.state_of_car = 'sprawny' and  dt.vehicle_id \n" +
+                            "not in (select (vehicle_id) from reservation where ((start_date <= '" + start_date + "' and end_date >= '" + end_date + "') or (start_date >= '" + start_date + "' and start_date <= '" + end_date + "') or (end_date >= '" + start_date + "' and end_date <= '" + end_date + "'))) and dt.vehicle_id \n" +
+                            "not in (select (vehicle_id) from rental where ((start_date <= '" + start_date + "' and end_date >= '" + end_date + "') or (start_date >= '" + start_date + "' and start_date <= '" + end_date + "') or (end_date >= '" + start_date + "' and end_date <= '" + end_date + "')))";
+                    System.out.println(sql);
+                    try {
+                        ResultSet rs = stmt.executeQuery(sql);
+                        String[] department = String.valueOf(comboBox.getSelectedItem()).split(" ");
+                        while(rs.next()) {
+                            if (rs.getInt("DEPARTMENT_ID")==(Integer.parseInt(department[0]))) {
+                                rowData[0] = rs.getString("CAR_BRAND");
+                                rowData[1] = rs.getString("CAR_MODEL");
+                                rowData[2] = rs.getInt("YEAR_OF_PRODUCTION");
+                                rowData[3] = rs.getInt("CARS_MILEAGE");
+                                rowData[4] = rs.getInt("VEHICLE_ID");
+                                tableModel.addRow(rowData);
+                            }
+                        }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    carsTable.setModel(tableModel);
+                }
+
+                else {
+                    JOptionPane.showMessageDialog(reservePanel, "Błędna chronologia dat!");
+                }
+            }
+
+            else {
+                JOptionPane.showMessageDialog(reservePanel, "Wprowadzono datę rozpoczęcia z przeszłości!");
+            }
+        }
+
+        else {
+            JOptionPane.showMessageDialog(reservePanel, "Zły format dat!");
+        }
     }
 
     public void showRentals(int customer_id) throws SQLException {
