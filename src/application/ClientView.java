@@ -163,24 +163,7 @@ public class ClientView {
                             String columns[] = {"Marka","Model","Rok produkcji", "Przebieg", "ID pojazdu"};
                             DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
                             Object rowData[] = new Object[5];
-                            sql = //  "alter session set nls_date_format = 'RRRR-MM-DD'; \n" +
-                                    sql = //  "alter session set nls_date_format = 'RRRR-MM-DD'; \n" +
-                                            "SELECT\n" +
-                                                    "distinct(dt.vehicle_id) as VEHICLE_ID, \n" +
-                                                    "c.CAR_BRAND as CAR_BRAND,\n" +
-                                                    "c.CAR_MODEL as CAR_MODEL,\n" +
-                                                    "dt.YEAR_OF_PRODUCTION as YEAR_OF_PRODUCTION,\n" +
-                                                    "dt.CARS_MILEAGE as CARS_MILEAGE,\n" +
-                                                    "dp.department_id as DEPARTMENT_ID\n" +
-                                                    "FROM\n" +
-                                                    "rental r\n" +
-                                                    "\n" +
-                                                    "JOIN DATA_OF_VEHICLE dt on dt.vehicle_id = r.vehicle_id\n" +
-                                                    "JOIN CARS c on c.CAR_ID = dt.CAR_ID\n" +
-                                                    "JOIN DEPARTMENTS dp on dp.DEPARTMENT_ID = dt.DEPARTMENT_ID\n" +
-                                                    "JOIN RESERVATION rs on rs.DEPARTMENT_ID = dp.DEPARTMENT_ID\n" +
-                                                    "WHERE dt.STATE_OF_CAR = 'sprawny' AND dp.DEPARTMENT_ID = " + dpID +"  and not ((r.start_date > '" + start_date + "' and r.end_date < '" + end_date + "') or (r.start_date < '" + start_date + "' and r.end_date > '" + end_date + "') or (r.end_date > '" + start_date + "' and r.end_date < '" + end_date + "') or (r.start_date > '" + start_date + "' and r.start_date < '" + end_date + "') or (rs.start_date > '" + start_date + "' and rs.end_date < '" + end_date + "') or (rs.start_date < '" + start_date + "' and rs.end_date > '" + end_date + "') or (rs.end_date > '" + start_date + "' and rs.end_date < '" + end_date + "') or (rs.start_date > '" + start_date + "' and rs.start_date < '" + end_date + "'))";
-
+                            sql = "SELECT c.car_brand, c.car_model, dt.year_of_production, dt.cars_mileage, dt.vehicle_id FROM data_of_vehicle dt join cars c on c.car_id = dt.car_id where department_id = " + dpID + " and dt.state_of_car = 'sprawny' and  dt.vehicle_id not in (select (vehicle_id) from reservation where ((start_date <= '" + start_date + "' and end_date >= '" + end_date + "') or (start_date >= '" + start_date + "' and start_date <= '" + end_date + "') or (end_date >= '" + start_date + "' and end_date <= '" + end_date + "'))) and dt.vehicle_id not in (select (vehicle_id) from rental where ((start_date <= '" + start_date + "' and end_date >= '" + end_date + "') or (start_date >= '" + start_date + "' and start_date <= '" + end_date + "') or (end_date >= '" + start_date + "' and end_date <= '" + end_date + "')));";
                             
                             System.out.println(sql);
                             try {
