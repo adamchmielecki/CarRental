@@ -163,8 +163,12 @@ public class ClientView {
                             String columns[] = {"Marka","Model","Rok produkcji", "Przebieg", "ID pojazdu"};
                             DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
                             Object rowData[] = new Object[5];
-                            sql = "SELECT c.car_brand as CAR_BRAND, c.car_model as CAR_MODEL, dt.year_of_production as YEAR_OF_PRODUCTION, dt.cars_mileage as CARS_MILEAGE, dt.vehicle_id as VEHICLE_ID FROM data_of_vehicle dt join cars c on c.car_id = dt.car_id where department_id = "+dpID+" and dt.state_of_car = 'sprawny' and dt.vehicle_id not in (select (vehicle_id) from reservation where ((start_date <= '"+start_date+"' and end_date >= '"+end_date+"') or (start_date >= '"+start_date+"' and start_date <= '"+end_date+"') or (end_date >= '"+start_date+"' and end_date <= '"+end_date+"'))) and dt.vehicle_id not in (select (vehicle_id) from rental where ((start_date <= '" + start_date + "' and end_date >= '" + end_date + "') or (start_date >= '" + start_date + "' and start_date <= '" + end_date + "') or (end_date >= '" + start_date + "' and end_date <= '" + end_date + "')));";
-                            
+                            sql = "SELECT c.car_brand AS CAR_BRAND, c.car_model AS CAR_MODEL, dt.year_of_production AS YEAR_OF_PRODUCTION, dt.cars_mileage AS CARS_MILEAGE, dt.vehicle_id AS VEHICLE_ID, dt.department_id as department_id \n" +
+                                    "FROM data_of_vehicle dt \n" +
+                                    "join cars c on c.car_id = dt.car_id \n" +
+                                    "where dt.department_id = " + dpID + " and dt.state_of_car = 'sprawny' and  dt.vehicle_id \n" +
+                                    "not in (select (vehicle_id) from reservation where ((start_date <= '" + start_date + "' and end_date >= '" + end_date + "') or (start_date >= '" + start_date + "' and start_date <= '" + end_date + "') or (end_date >= '" + start_date + "' and end_date <= '" + end_date + "'))) and dt.vehicle_id \n" +
+                                    "not in (select (vehicle_id) from rental where ((start_date <= '" + start_date + "' and end_date >= '" + end_date + "') or (start_date >= '" + start_date + "' and start_date <= '" + end_date + "') or (end_date >= '" + start_date + "' and end_date <= '" + end_date + "')))";
                             System.out.println(sql);
                             try {
                                 ResultSet rs = stmt.executeQuery(sql);
