@@ -8,8 +8,6 @@ import java.awt.event.ContainerAdapter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
@@ -74,9 +72,9 @@ public class ClientView {
 
 
 
-        showAvaiableCars(rs, customer_id);
+        showRentals(customer_id);
 
-        showReservations(rs, customer_id);
+        showReservations(customer_id);
 
 
 
@@ -166,23 +164,24 @@ public class ClientView {
                             DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
                             Object rowData[] = new Object[5];
                             sql = //  "alter session set nls_date_format = 'RRRR-MM-DD'; \n" +
-                                    "SELECT\n" +
-                                            "distinct(dt.vehicle_id) as VEHICLE_ID, \n" +
-                                            "c.CAR_BRAND as CAR_BRAND,\n" +
-                                            "c.CAR_MODEL as CAR_MODEL,\n" +
-                                            "dt.YEAR_OF_PRODUCTION as YEAR_OF_PRODUCTION,\n" +
-                                            "dt.CARS_MILEAGE as CARS_MILEAGE,\n" +
-                                            "dp.department_id as DEPARTMENT_ID\n" +
-                                            "FROM\n" +
-                                            "rental r\n" +
-                                            "\n" +
-                                            "JOIN DATA_OF_VEHICLE dt on dt.vehicle_id = r.vehicle_id\n" +
-                                            "JOIN CARS c on c.CAR_ID = dt.CAR_ID\n" +
-                                            "JOIN DEPARTMENTS dp on dp.DEPARTMENT_ID = dt.DEPARTMENT_ID\n" +
-                                            "JOIN RESERVATION rs on rs.DEPARTMENT_ID = dp.DEPARTMENT_ID\n" +
-                                            "WHERE dt.STATE_OF_CAR = 'sprawny' AND dp.DEPARTMENT_ID = " + dpID +"  and not ((r.start_date > '" + start_date + "' and r.end_date < '" + end_date + "') or (r.start_date < '" + start_date + "' and r.end_date > '" + end_date + "') or (r.end_date > '" + start_date + "' and r.end_date < '" + end_date + "') or (r.start_date > '" + start_date + "' and r.start_date < '" + end_date + "') or (rs.start_date > '" + start_date + "' and rs.end_date < '" + end_date + "') or (rs.start_date < '" + start_date + "' and rs.end_date > '" + end_date + "') or (rs.end_date > '" + start_date + "' and rs.end_date < '" + end_date + "') or (rs.start_date > '" + start_date + "' and rs.start_date < '" + end_date + "'))";
+                                    sql = //  "alter session set nls_date_format = 'RRRR-MM-DD'; \n" +
+                                            "SELECT\n" +
+                                                    "distinct(dt.vehicle_id) as VEHICLE_ID, \n" +
+                                                    "c.CAR_BRAND as CAR_BRAND,\n" +
+                                                    "c.CAR_MODEL as CAR_MODEL,\n" +
+                                                    "dt.YEAR_OF_PRODUCTION as YEAR_OF_PRODUCTION,\n" +
+                                                    "dt.CARS_MILEAGE as CARS_MILEAGE,\n" +
+                                                    "dp.department_id as DEPARTMENT_ID\n" +
+                                                    "FROM\n" +
+                                                    "rental r\n" +
+                                                    "\n" +
+                                                    "JOIN DATA_OF_VEHICLE dt on dt.vehicle_id = r.vehicle_id\n" +
+                                                    "JOIN CARS c on c.CAR_ID = dt.CAR_ID\n" +
+                                                    "JOIN DEPARTMENTS dp on dp.DEPARTMENT_ID = dt.DEPARTMENT_ID\n" +
+                                                    "JOIN RESERVATION rs on rs.DEPARTMENT_ID = dp.DEPARTMENT_ID\n" +
+                                                    "WHERE dt.STATE_OF_CAR = 'sprawny' AND dp.DEPARTMENT_ID = " + dpID +"  and not ((r.start_date > '" + start_date + "' and r.end_date < '" + end_date + "') or (r.start_date < '" + start_date + "' and r.end_date > '" + end_date + "') or (r.end_date > '" + start_date + "' and r.end_date < '" + end_date + "') or (r.start_date > '" + start_date + "' and r.start_date < '" + end_date + "') or (rs.start_date > '" + start_date + "' and rs.end_date < '" + end_date + "') or (rs.start_date < '" + start_date + "' and rs.end_date > '" + end_date + "') or (rs.end_date > '" + start_date + "' and rs.end_date < '" + end_date + "') or (rs.start_date > '" + start_date + "' and rs.start_date < '" + end_date + "'))";
 
-
+                            
                             System.out.println(sql);
                             try {
                                 ResultSet rs = stmt.executeQuery(sql);
@@ -345,11 +344,11 @@ public class ClientView {
         rs = stmt.executeQuery(sql);
         rs.next();
         String confirmation = "Pomyślnie zarezerwowano pojazd nr " + rs.getInt("VEHICLE_ID") + " w terminie od " + rs.getDate("START_DATE") + " do " + rs.getDate("END_DATE") + ".";
-        showReservations(rs, cusomer_id);
+        showReservations(cusomer_id);
         return confirmation;
     }
 
-    public void showAvaiableCars(ResultSet rs, int customer_id) throws SQLException {
+    public void showRentals(int customer_id) throws SQLException {
         String columns[] = {"Marka","Model","Data rozpoczęcia", "Data zakończenia", "Koszt"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
         Object rowData[] = new Object[5];
@@ -360,7 +359,7 @@ public class ClientView {
         while(rs.next()){
             size = rs.getInt("s");
         }
-        sql = "select * from client_rental_history where customer_id = " + customer_id;
+        sql = "select CAR_BRAND, CAR_MODEL, to_char(START_DATE, 'YYYY-MM-DD') AS START_DATE, to_char(END_DATE, 'YYYY-MM-DD') AS END_DATE, COST_OF_RENT  from client_rental_history where customer_id = " + customer_id;
         rs = stmt.executeQuery(sql);
         for (int i=0; i<size; i++) {
             if(size>0){
@@ -384,7 +383,7 @@ public class ClientView {
         rentalsTable.setModel(tableModel);
     }
 
-    public void showReservations(ResultSet rs, int customer_id) throws SQLException {
+    public void showReservations(int customer_id) throws SQLException {
         String columns2[] = {"Marka","Model","Data rozpoczęcia", "Data zakończenia"};
         DefaultTableModel tableModel2 = new DefaultTableModel(columns2, 0);
         Object rowData2[] = new Object[4];
@@ -395,7 +394,7 @@ public class ClientView {
         while(rs.next()){
             size2 = rs.getInt("s");
         }
-        sql = "select * from CLIENT_RESERVATIONS where customer_id = " + customer_id  + " and end_date > sysdate";
+        sql = "select CAR_BRAND, CAR_MODEL, to_char(START_DATE, 'YYYY-MM-DD') AS START_DATE, to_char(END_DATE, 'YYYY-MM-DD') AS END_DATE from CLIENT_RESERVATIONS where customer_id = " + customer_id  + " and end_date > sysdate";
         rs = stmt.executeQuery(sql);
         for (int i=0; i<size2; i++) {
             if(size2>0){
