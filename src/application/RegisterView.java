@@ -37,18 +37,16 @@ public class RegisterView {
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
-                    //CheckPeselView.registerFrame.setVisible(false);
                     JOptionPane.showMessageDialog(SignInPanel.frame,"Pomyślnie zarejestrowano nowego użytkownika!");
                     SignInPanel.frame.setContentPane(new SignInPanel().loginPanel);
                     SignInPanel.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     SignInPanel.frame.pack();
-                    //SignInPanel.frame.setVisible(true);
                 }
             }
         });
     }
 
-    public boolean verifyUserName(String login){
+    private boolean verifyUserName(String login){
         String sql = "select USER_LOGIN from LOGIN_DATA where USER_LOGIN = '" + login +"'";
         try {
             ResultSet rs = stmt.executeQuery(sql);
@@ -67,7 +65,7 @@ public class RegisterView {
         return false;
     }
 
-    public static boolean verifyPassword(char[] password){
+    private static boolean verifyPassword(char[] password){
         if(!(Arrays.toString(password).matches("(?=.*[0-9])(?=.*[A-Z]).{8,}$"))) {
             JOptionPane.showMessageDialog(SignInPanel.frame, "Hasło za słabe (musi zawierać minimum: cyfrę, dużą literę i 8 znaków)");
             return false;
@@ -75,7 +73,7 @@ public class RegisterView {
         return true;
     }
 
-    public static boolean checkData(String firstName, String lastName, String phoneNumber, String idNumber, String drivingLicenseNumber){
+    private static boolean checkData(String firstName, String lastName, String phoneNumber, String idNumber, String drivingLicenseNumber){
         if((firstName.length() == 0) || !(firstName.matches("[A-Z][a-zA-ZżźćńółęąśŻŹĆŚŁÓŃ]+"))){
             JOptionPane.showMessageDialog(SignInPanel.frame, "Niepoprawne dane(IMIĘ).");
             return false;

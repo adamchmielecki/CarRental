@@ -19,7 +19,6 @@ public class ConfirmDeleting {
 
     Statement stmt;
     public ConfirmDeleting(int clientID,String clientLogin, String clientPassword, Statement stmt) {
-
         this.stmt = stmt;
 
         deleteButton.addActionListener(new ActionListener() {
@@ -36,7 +35,6 @@ public class ConfirmDeleting {
                 }
             }
         });
-
 
         backButton.addActionListener(new ActionListener() {
             @Override
