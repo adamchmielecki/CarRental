@@ -45,22 +45,19 @@ public class ClientView {
     private JTable rentalsTable;
     private JPanel reservationsPanel;
     private JTable reservationsTable;
+    private JButton cancelReservationButton;
 
     int clicked = 0;
-    int selected_dep = -1;
     int cusomer_id = -1;
     String sql = "";
     Statement stmt;
-    int c_ID;
     int PD_ID;
     String login;
     String password;
     ResultSet rs;
     public ClientView(int customer_id, Statement stmt) throws SQLException {
         this.stmt = stmt;
-        System.out.println(customer_id);
         this.cusomer_id = customer_id;
-        System.out.println(customer_id);
 
         tabbedPane1.addComponentListener(new ComponentAdapter() {
         });
@@ -68,7 +65,8 @@ public class ClientView {
         });
         myDataPanel.addComponentListener(new ComponentAdapter() {
         });
-
+        rentalsTable.addContainerListener(new ContainerAdapter() {
+        });
 
 
 
@@ -76,51 +74,10 @@ public class ClientView {
 
         showReservations(customer_id);
 
+        setCustomerData(customer_id);
 
+        setDepartments();
 
-        sql = "SELECT * from customer c \n" +
-                "join personal_data pd on pd.personal_data_id  = c.customer_personal_data \n" +
-                "join login_data l on l.login_data_id = c.customer_login_data_id\n" +
-                "where c.customer_id =" + customer_id;
-        rs = stmt.executeQuery(sql);
-        while(rs.next()){
-
-            PD_ID = rs.getInt("CUSTOMER_PERSONAL_DATA");
-            login = rs.getString("USER_LOGIN");
-            password = rs.getString("USER_PASSWORD");
-
-            IDtextField.setText(String.valueOf(customer_id));
-            firstNameTextField.setText(rs.getString("FIRST_NAME"));
-            lastNameTextField.setText(rs.getString("LAST_NAME"));
-            peselNameTextField.setText(rs.getString("PESEL"));
-            addressTextField.setText(rs.getString("STREET"));
-            cityTextField.setText(rs.getString("CITY"));
-            phoneTextField.setText(rs.getString("PHONE_NUMBER"));
-        }
-
-
-
-        sql = "select count(*) as c from departments";
-        rs = stmt.executeQuery(sql);
-        int departmentsCount = 0;
-        while(rs.next()){
-            departmentsCount = rs.getInt("c");
-        }
-        String[] departments = new String[departmentsCount];
-
-        sql = "select * from departments";
-        rs = stmt.executeQuery(sql);
-        int departmentID = 1;
-        String departmentCity;
-        for (int i=0; i<departmentsCount; i++) {
-            rs.next();
-            departmentID = rs.getInt("DEPARTMENT_ID");
-            departmentCity = rs.getString("CITY");
-            departments[i] = String.valueOf(departmentID) + " - " + departmentCity;
-        }
-
-        DefaultComboBoxModel deparmentsModel = new DefaultComboBoxModel(departments);
-        comboBox.setModel(deparmentsModel);
 
 
         modifyDataButton.addActionListener(new ActionListener() {
@@ -138,7 +95,6 @@ public class ClientView {
                 }
             }
         });
-
 
         deleteData.addActionListener(new ActionListener() {
             @Override
@@ -201,11 +157,20 @@ public class ClientView {
                 SignInPanel.frame.setVisible(true);
             }
         });
-        rentalsTable.addContainerListener(new ContainerAdapter() {
+
+        cancelReservationButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    cancelReservation();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         });
     }
 
-    public boolean isDateValid(String dateStr) {
+    private boolean isDateValid(String dateStr) {
         try {
             LocalDate.parse(dateStr);
         } catch (DateTimeParseException e) {
@@ -214,7 +179,7 @@ public class ClientView {
         return true;
     }
 
-    public void editData(ActionEvent e) {
+    private void editData(ActionEvent e) {
         firstNameTextField.setEditable(true);
         lastNameTextField.setEditable(true);
         addressTextField.setEditable(true);
@@ -224,7 +189,7 @@ public class ClientView {
         clicked = 1;
     }
 
-    public static boolean checkData(String firstName, String lastName, String phoneNumber){
+    private static boolean checkData(String firstName, String lastName, String phoneNumber){
         if((firstName.length() == 0) || !(firstName.matches("[A-Z][a-zA-ZżźćńółęąśŻŹĆŚŁÓŃ]+"))){
             JOptionPane.showMessageDialog(null, "Niepoprawne dane(IMIĘ).");
             return false;
@@ -240,9 +205,7 @@ public class ClientView {
         return true;
     }
 
-    public void saveData(ActionEvent e) throws SQLException {
-
-
+    private void saveData(ActionEvent e) throws SQLException {
 
         sql = "UPDATE PERSONAL_DATA SET FIRST_NAME = '"
                 + firstNameTextField.getText() + "', LAST_NAME = '"
@@ -263,7 +226,42 @@ public class ClientView {
 
     }
 
-    public String reserveCar(int departmentID) throws SQLException {
+    private String cancelReservation() throws SQLException {
+        int selectedRow = reservationsTable.getSelectedRow();
+        sql = "select max(RESERVATION_ID)+1 as maxID from RESERVATION";
+        rs = stmt.executeQuery(sql);
+        sql = "delete from reservation where reservation_id =" + reservationsTable.getValueAt(selectedRow, 0);
+        stmt.executeUpdate(sql);
+
+        String confirmation = "Anulowano rezerwacje.";
+        showReservations(cusomer_id);
+        return confirmation;
+    }
+
+    private void setCustomerData(int customer_id) throws SQLException {
+        sql = "SELECT * from customer c \n" +
+                "join personal_data pd on pd.personal_data_id  = c.customer_personal_data \n" +
+                "join login_data l on l.login_data_id = c.customer_login_data_id\n" +
+                "where c.customer_id =" + customer_id;
+        rs = stmt.executeQuery(sql);
+        while(rs.next()){
+
+            PD_ID = rs.getInt("CUSTOMER_PERSONAL_DATA");
+            login = rs.getString("USER_LOGIN");
+            password = rs.getString("USER_PASSWORD");
+
+            IDtextField.setText(String.valueOf(customer_id));
+            firstNameTextField.setText(rs.getString("FIRST_NAME"));
+            lastNameTextField.setText(rs.getString("LAST_NAME"));
+            peselNameTextField.setText(rs.getString("PESEL"));
+            addressTextField.setText(rs.getString("STREET"));
+            cityTextField.setText(rs.getString("CITY"));
+            phoneTextField.setText(rs.getString("PHONE_NUMBER"));
+        }
+
+    }
+
+    private String reserveCar(int departmentID) throws SQLException {
         int selectedRow = carsTable.getSelectedRow();
         sql = "select max(RESERVATION_ID)+1 as maxID from RESERVATION";
         ResultSet rs = stmt.executeQuery(sql);
@@ -289,7 +287,32 @@ public class ClientView {
         return confirmation;
     }
 
-    public void showAvailableCars(){
+    private void setDepartments() throws SQLException {
+
+        sql = "select count(*) as c from departments";
+        rs = stmt.executeQuery(sql);
+        int departmentsCount = 0;
+        while(rs.next()){
+            departmentsCount = rs.getInt("c");
+        }
+        String[] departments = new String[departmentsCount];
+
+        sql = "select * from departments";
+        rs = stmt.executeQuery(sql);
+        int departmentID = 1;
+        String departmentCity;
+        for (int i=0; i<departmentsCount; i++) {
+            rs.next();
+            departmentID = rs.getInt("DEPARTMENT_ID");
+            departmentCity = rs.getString("CITY");
+            departments[i] = String.valueOf(departmentID) + " - " + departmentCity;
+        }
+
+        DefaultComboBoxModel deparmentsModel = new DefaultComboBoxModel(departments);
+        comboBox.setModel(deparmentsModel);
+    }
+
+    private void showAvailableCars(){
         if (isDateValid(startDateTextField.getText()) && isDateValid(endDateTextField.getText())) {
             if (LocalDate.now().isBefore(LocalDate.parse(startDateTextField.getText())) || LocalDate.parse(startDateTextField.getText()).isEqual(LocalDate.now())) {
                 if (LocalDate.parse(startDateTextField.getText()).isBefore(LocalDate.parse(endDateTextField.getText())) || LocalDate.parse(startDateTextField.getText()).isEqual(LocalDate.parse(endDateTextField.getText()))) {
@@ -340,7 +363,7 @@ public class ClientView {
         }
     }
 
-    public void showRentals(int customer_id) throws SQLException {
+    private void showRentals(int customer_id) throws SQLException {
         String columns[] = {"Marka","Model","Data rozpoczęcia", "Data zakończenia", "Koszt"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
         Object rowData[] = new Object[5];
@@ -375,10 +398,10 @@ public class ClientView {
         rentalsTable.setModel(tableModel);
     }
 
-    public void showReservations(int customer_id) throws SQLException {
-        String columns2[] = {"Marka","Model","Data rozpoczęcia", "Data zakończenia"};
+    private void showReservations(int customer_id) throws SQLException {
+        String columns2[] = {"Numer rezerwacji","Marka","Model","Data rozpoczęcia", "Data zakończenia"};
         DefaultTableModel tableModel2 = new DefaultTableModel(columns2, 0);
-        Object rowData2[] = new Object[4];
+        Object rowData2[] = new Object[5];
 
         sql = "select count(CUSTOMER_ID) as s from CLIENT_RESERVATIONS where customer_id = " + customer_id + " and end_date > sysdate";
         rs = stmt.executeQuery(sql);
@@ -386,15 +409,16 @@ public class ClientView {
         while(rs.next()){
             size2 = rs.getInt("s");
         }
-        sql = "select CAR_BRAND, CAR_MODEL, to_char(START_DATE, 'YYYY-MM-DD') AS START_DATE, to_char(END_DATE, 'YYYY-MM-DD') AS END_DATE from CLIENT_RESERVATIONS where customer_id = " + customer_id  + " and end_date > sysdate";
+        sql = "select RESERVATION_ID, CAR_BRAND, CAR_MODEL, to_char(START_DATE, 'YYYY-MM-DD') AS START_DATE, to_char(END_DATE, 'YYYY-MM-DD') AS END_DATE from CLIENT_RESERVATIONS where customer_id = " + customer_id  + " and end_date > sysdate";
         rs = stmt.executeQuery(sql);
         for (int i=0; i<size2; i++) {
             if(size2>0){
                 rs.next();
-                rowData2[0] = rs.getString("CAR_BRAND");
-                rowData2[1] = rs.getString("CAR_MODEL");
-                rowData2[2] = rs.getString("START_DATE");
-                rowData2[3] = rs.getString("END_DATE");
+                rowData2[0] = rs.getString("RESERVATION_ID");
+                rowData2[1] = rs.getString("CAR_BRAND");
+                rowData2[2] = rs.getString("CAR_MODEL");
+                rowData2[3] = rs.getString("START_DATE");
+                rowData2[4] = rs.getString("END_DATE");
                 tableModel2.addRow(rowData2);
             }
             else {
