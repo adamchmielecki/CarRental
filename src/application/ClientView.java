@@ -213,7 +213,6 @@ public class ClientView {
                 + addressTextField.getText() + "', CITY = '"
                 + cityTextField.getText() + "', PHONE_NUMBER = '"
                 + phoneTextField.getText() + "' WHERE PERSONAL_DATA_ID = " + PD_ID;
-        System.out.println(sql);
         stmt.executeUpdate(sql);
 
         firstNameTextField.setEditable(false);
@@ -334,7 +333,6 @@ public class ClientView {
                             "where dt.department_id = " + dpID + " and dt.state_of_car = 'sprawny' and  dt.vehicle_id \n" +
                             "not in (select (vehicle_id) from reservation where ((start_date <= '" + start_date + "' and end_date >= '" + end_date + "') or (start_date >= '" + start_date + "' and start_date <= '" + end_date + "') or (end_date >= '" + start_date + "' and end_date <= '" + end_date + "'))) and dt.vehicle_id \n" +
                             "not in (select (vehicle_id) from rental where ((start_date <= '" + start_date + "' and end_date >= '" + end_date + "') or (start_date >= '" + start_date + "' and start_date <= '" + end_date + "') or (end_date >= '" + start_date + "' and end_date <= '" + end_date + "')))";
-                    System.out.println(sql);
                     try {
                         ResultSet rs = stmt.executeQuery(sql);
                         String[] department = String.valueOf(comboBox.getSelectedItem()).split(" ");
