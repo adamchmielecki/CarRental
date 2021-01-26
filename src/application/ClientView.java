@@ -198,7 +198,7 @@ public class ClientView {
             JOptionPane.showMessageDialog(null, "Niepoprawne dane(NAZWISKO).");
             return false;
         }
-        if((phoneNumber.length() < 9) || !(phoneNumber.trim().matches("\\d+"))){
+        if((phoneNumber.length() < 9) || (phoneNumber.length() > 10) || !(phoneNumber.trim().matches("\\d+"))){
             JOptionPane.showMessageDialog(null, "Niepoprawne dane(TELEFON).");
             return false;
         }
