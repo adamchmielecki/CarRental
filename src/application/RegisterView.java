@@ -26,22 +26,13 @@ public class RegisterView {
     private JTextField textFieldAddress;
     private JTextField textFieldCity;
     Statement stmt;
+
     public RegisterView(String PESEL, Statement stmt) {
         this.stmt = stmt;
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (verifyUserName(textFieldLogin.getText()) && verifyPassword(passwordField.getPassword()) && checkData(textFieldFirstName.getText(), textFieldLastName.getText(), textFieldPhone.getText(), textFieldIDNumber.getText(), textFieldDrivingLic.getText())) {
-                    try {
-                        registerClient(PESEL, textFieldFirstName.getText(), textFieldLastName.getText(), textFieldPhone.getText(), textFieldCity.getText(), textFieldAddress.getText(), textFieldIDNumber.getText(), textFieldDrivingLic.getText(), textFieldLogin.getText(), passwordField.getPassword());
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-                    JOptionPane.showMessageDialog(SignInPanel.frame,"Pomyślnie zarejestrowano nowego użytkownika!");
-                    SignInPanel.frame.setContentPane(new SignInPanel().loginPanel);
-                    SignInPanel.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    SignInPanel.frame.pack();
-                }
+                registerClientForm(PESEL);
             }
         });
     }
@@ -51,9 +42,10 @@ public class RegisterView {
         try {
             ResultSet rs = stmt.executeQuery(sql);
             System.out.println(rs);
-            if (!rs.next()) {
+            if ((!rs.next()) && (login.length() > 0)) {
                 return true;
             }
+
             else {
                 JOptionPane.showMessageDialog(SignInPanel.frame,"Wybierz inny login");
                 return false;
@@ -74,24 +66,24 @@ public class RegisterView {
     }
 
     private static boolean checkData(String firstName, String lastName, String phoneNumber, String idNumber, String drivingLicenseNumber){
-        if((firstName.length() == 0) || !(firstName.matches("[A-Z][a-zA-ZżźćńółęąśŻŹĆŚŁÓŃ]+"))){
+        if((firstName.length() == 0) || (firstName.length() > 18) || !(firstName.matches("[A-Z][a-zA-ZżźćńółęąśŻŹĆŚŁÓŃ]+"))){
             JOptionPane.showMessageDialog(SignInPanel.frame, "Niepoprawne dane(IMIĘ).");
             return false;
         }
-        if((lastName.length() == 0) || !(lastName.matches("[A-Z][a-zA-ZżźćńółęąśŻŹĆĄŚĘŁÓŃ]+"))){
+        if((lastName.length() == 0) || (lastName.length() > 18) || !(lastName.matches("[A-Z][a-zA-ZżźćńółęąśŻŹĆĄŚĘŁÓŃ]+"))){
             JOptionPane.showMessageDialog(SignInPanel.frame, "Niepoprawne dane(NAZWISKO).");
             return false;
         }
-        if((phoneNumber.length() != 9) || !(phoneNumber.matches("\\d+"))){
+        if((phoneNumber.length() < 9) || (phoneNumber.length() > 10) || !(phoneNumber.matches("\\d+"))){
             JOptionPane.showMessageDialog(SignInPanel.frame, "Niepoprawne dane(TELEFON).");
             return false;
         }
-        if(idNumber.length() == 0){
-            JOptionPane.showMessageDialog(SignInPanel.frame, "Pole NR DOWODU OSOBISTEGO nie moze być puste.");
+        if((idNumber.length() == 0) || (idNumber.length() > 18)){
+            JOptionPane.showMessageDialog(SignInPanel.frame, "Niepoprawna długość pola NR DOWODU OSOBISTEGO.");
             return false;
         }
-        if(drivingLicenseNumber.length() == 0){
-            JOptionPane.showMessageDialog(SignInPanel.frame, "Pole NR PRAWA JAZDY nie moze być puste.");
+        if((drivingLicenseNumber.length() == 0) || (drivingLicenseNumber.length() > 18)){
+            JOptionPane.showMessageDialog(SignInPanel.frame, "Niepoprawna długość pola NR PRAWA JAZDY.");
             return false;
         }
         return true;
@@ -140,6 +132,20 @@ public class RegisterView {
                 +drivingLicenseNumber + "',"
                 +nextLoginDataID + ")";
         stmt.executeUpdate(sql);
+    }
+
+    private void registerClientForm(String PESEL){
+        if (verifyUserName(textFieldLogin.getText()) && verifyPassword(passwordField.getPassword()) && checkData(textFieldFirstName.getText(), textFieldLastName.getText(), textFieldPhone.getText(), textFieldIDNumber.getText(), textFieldDrivingLic.getText())) {
+            try {
+                registerClient(PESEL, textFieldFirstName.getText(), textFieldLastName.getText(), textFieldPhone.getText(), textFieldCity.getText(), textFieldAddress.getText(), textFieldIDNumber.getText(), textFieldDrivingLic.getText(), textFieldLogin.getText(), passwordField.getPassword());
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            JOptionPane.showMessageDialog(SignInPanel.frame,"Pomyślnie zarejestrowano nowego użytkownika!");
+            SignInPanel.frame.setContentPane(new SignInPanel().loginPanel);
+            SignInPanel.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            SignInPanel.frame.pack();
+        }
     }
 
 }

@@ -198,7 +198,7 @@ public class ClientView {
             JOptionPane.showMessageDialog(null, "Niepoprawne dane(NAZWISKO).");
             return false;
         }
-        if((phoneNumber.length() != 9) || !(phoneNumber.matches("\\d+"))){
+        if((phoneNumber.length() < 9) || !(phoneNumber.matches("\\d+"))){
             JOptionPane.showMessageDialog(null, "Niepoprawne dane(TELEFON).");
             return false;
         }
@@ -226,16 +226,22 @@ public class ClientView {
 
     }
 
-    private String cancelReservation() throws SQLException {
+    private void cancelReservation() throws SQLException {
         int selectedRow = reservationsTable.getSelectedRow();
-        sql = "select max(RESERVATION_ID)+1 as maxID from RESERVATION";
-        rs = stmt.executeQuery(sql);
-        sql = "delete from reservation where reservation_id =" + reservationsTable.getValueAt(selectedRow, 0);
-        stmt.executeUpdate(sql);
+        if(selectedRow >= 0){
+            sql = "select max(RESERVATION_ID)+1 as maxID from RESERVATION";
+            rs = stmt.executeQuery(sql);
+            sql = "delete from reservation where reservation_id =" + reservationsTable.getValueAt(selectedRow, 0);
+            stmt.executeUpdate(sql);
 
-        String confirmation = "Anulowano rezerwacje.";
-        showReservations(cusomer_id);
-        return confirmation;
+            String confirmation = "Anulowano rezerwacje.";
+            showReservations(cusomer_id);
+        }
+
+        else{
+            JOptionPane.showMessageDialog(null,"Nie wybrano rezerwacji.");
+        }
+
     }
 
     private void setCustomerData(int customer_id) throws SQLException {

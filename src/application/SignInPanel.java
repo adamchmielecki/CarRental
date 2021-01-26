@@ -49,9 +49,6 @@ public class SignInPanel {
             while(rs.next()){
                 correct_password = rs.getString("USER_PASSWORD");
             }
-
-            /*if(BCrypt.checkpw(enteredPassword, "$2a$10$/hJ/Kl0r1C69PQskIMaXmuFizJeNF66J310uEk/2DbPfyHwQP1LWG")) return true;
-            else return false;*/
             if(BCrypt.checkpw(enteredPassword, correct_password)) return true;
             else return false;
         }
@@ -60,7 +57,9 @@ public class SignInPanel {
         }
     }
 
-    private void signIn(String userName, char[] password) throws SQLException {
+
+
+    public void signIn(String userName, char[] password) throws SQLException {
 
         String enteredPassword = String.valueOf(password);
         String login = "SELECT LOGIN_DATA_ID FROM LOGIN_DATA WHERE USER_LOGIN = '" + userName + "'";
